@@ -1,0 +1,27 @@
+html(lang="en") 
+	head 
+		meta(lang="utf-8")
+		meta(charset="utf-8")
+		meta(name="viewport" content="width=device-width, initial-scale=1.0")
+
+		meta(name="theme-color" content="#aaaaaa")
+
+		//- TODO: create favicon head section
+
+		title!=title
+		meta(name="author" content="Ashoka University")
+		meta(name="description" content="The Ashoka Marketplace web platform")
+
+		block stylesheets
+			//- TODO: create reset, fonts, layout, forms, and flexbox stylesheets
+			link(rel="stylesheet" href="/stylesheets/main.css")
+
+		block scripts
+			//- TODO:: create layout scripts
+
+			if jump
+				script.
+					window.onload = window.location.hash = "#{jump}";
+
+	body: #Page
+		block content
