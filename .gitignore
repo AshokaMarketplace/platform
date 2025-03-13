@@ -13,6 +13,24 @@ lerna-debug.log*
 # Diagnostic reports (https://nodejs.org/api/report.html)
 report.[0-9]*.[0-9]*.[0-9]*.[0-9]*.json
 
+
+# macOS system files
+.DS_Store
+public/.DS_Store
+
+# Node.js
+node_modules/
+npm-debug.log
+
+# Environment files
+.env
+
+# Optional: Exclude if not actively using
+src/
+postcss.config.js
+tailwind.config.js
+
+
 # Runtime data
 pids
 *.pid
