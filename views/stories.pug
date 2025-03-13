@@ -1,0 +1,12 @@
+extends layout.pug
+
+block content
+  .container.mx-auto.p-8.bg-white.rounded-lg.shadow-md.mt-6(aria-label='Stories page')
+    .text-center.py-12
+      h1(class=['text-5xl', 'font-bold', 'text-white', 'bg-custom-red', 'rounded-tl-lg', 'rounded-tr-lg', 'py-4', 'mb-8']) FOUNDER STORIES
+    .grid(class=['grid-cols-1', 'md:grid-cols-2', 'gap-8'], role='region', aria-label='Founder stories grid')
+      each founder in founders
+        div(class=['bg-white', 'rounded-lg', 'shadow-md', 'p-6', 'flex', 'flex-col', 'items-center', 'border', 'border-gray-300'], role='article', aria-label=`Founder: ${founder.name}`)
+          img(class=['w-full', 'h-64', 'object-cover', 'rounded-t-lg', 'mb-4'], src=founder.image, alt=`${founder.name} portrait`, aria-label=`Portrait of ${founder.name}`)
+          h3(class=['text-xl', 'font-semibold', 'text-custom-red', 'mb-2'])= founder.name
+          p(class=['text-gray-700', 'text-base'])= founder.story

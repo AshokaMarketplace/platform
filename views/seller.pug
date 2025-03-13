@@ -1,0 +1,20 @@
+extends layout.pug
+
+block content
+  .container.mx-auto.p-6
+    h1.text-2xl.font-bold.text-red-600.mb-6 Seller Registration
+    form.max-w-md.mx-auto.space-y-4(hx-post='/seller', hx-target='#form-result', hx-swap='innerHTML')
+      .mb-4
+        label.block.text-gray-700.font-medium.mb-1 Name
+        input(type='text', name='name', required, class='border rounded p-2 w-full focus:outline-none focus:ring-2 focus:ring-red-500')
+      .mb-4
+        label.block.text-gray-700.font-medium.mb-1 Contact Info
+        input(type='email', name='contactInfo', required, class='border rounded p-2 w-full focus:outline-none focus:ring-2 focus:ring-red-500')
+      .mb-4
+        label.block.text-gray-700.font-medium.mb-1 Product Type
+        input(type='text', name='productType', required, class='border rounded p-2 w-full focus:outline-none focus:ring-2 focus:ring-red-500')
+      .mb-4
+        label.block.text-gray-700.font-medium.mb-1 Payment Details
+        input(type='text', name='paymentDetails', required, class='border rounded p-2 w-full focus:outline-none focus:ring-2 focus:ring-red-500')
+      button(type='submit', class='bg-red-500.text-white.px-4.py-2.rounded.hover:bg-red-600.transition-colors') Submit
+      #form-result

@@ -1,0 +1,19 @@
+extends layout.pug
+
+block content
+  .container.mx-auto.p-8.bg-white.rounded-lg.shadow-md.mt-6(aria-label='Products page')
+    .text-center.py-12
+      h1(class=['text-5xl', 'font-bold', 'text-white', 'bg-custom-red', 'rounded-tl-lg', 'rounded-tr-lg', 'py-4', 'mb-8']) GRAB YOUR PICK
+    .flex.justify-center.space-x-4.mb-8
+      button(class=['bg-custom-red', 'text-white', 'px-4', 'py-2', 'rounded-lg', 'hover:bg-red-600', 'focus:outline-none', 'focus:ring-2', 'focus:ring-red-600'], hx-get='/products?sort=filter', hx-target='#product-list', aria-label='Open product filters') Filters
+      button(class=['bg-gray-200', 'text-gray-700', 'px-4', 'py-2', 'rounded-lg', 'hover:bg-gray-300', 'focus:outline-none', 'focus:ring-2', 'focus:ring-gray-500'], hx-get='/products?sort=low-to-high', hx-target='#product-list', aria-label='Sort products from low to high price') Low to High
+      button(class=['bg-gray-200', 'text-gray-700', 'px-4', 'py-2', 'rounded-lg', 'hover:bg-gray-300', 'focus:outline-none', 'focus:ring-2', 'focus:ring-gray-500'], hx-get='/products?sort=high-to-low', hx-target='#product-list', aria-label='Sort products from high to low price') High to Low
+      button(class=['bg-gray-200', 'text-gray-700', 'px-4', 'py-2', 'rounded-lg', 'hover:bg-gray-300', 'focus:outline-none', 'focus:ring-2', 'focus:ring-gray-500'], hx-get='/products?sort=popularity', hx-target='#product-list', aria-label='Sort products by popularity') Popularity
+      button(class=['bg-gray-200', 'text-gray-700', 'px-4', 'py-2', 'rounded-lg', 'hover:bg-gray-300', 'focus:outline-none', 'focus:ring-2', 'focus:ring-gray-500'], hx-get='/products?sort=newly-added', hx-target='#product-list', aria-label='Sort products by newly added') Newly Added
+    #product-list.grid(class=['grid-cols-1', 'sm:grid-cols-2', 'lg:grid-cols-4', 'gap-8'], role='region', aria-label='Products grid')
+      each product in products
+        div(class=['bg-white', 'rounded-lg', 'shadow-md', 'p-6', 'flex', 'flex-col', 'items-center', 'hover:shadow-lg', 'transition-shadow'], role='article', aria-label=`Product: ${product.name}`)
+          img(class=['w-full', 'h-56', 'object-cover', 'rounded-t-lg', 'mb-4'], src=product.images[0], alt=product.name, aria-label=`Image of ${product.name}`)
+          h3(class=['text-xl', 'font-semibold', 'text-gray-800', 'mb-2'])= product.name
+          p(class=['text-gray-600', 'mb-4']) ₹#{product.price}
+          a(class=['text-blue-600', 'hover:underline', 'text-sm', 'focus:outline-none', 'focus:ring-2', 'focus:ring-blue-600'], href=`/product/${product.id}`, aria-label=`View more details for ${product.name}`) View More

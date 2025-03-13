@@ -1,0 +1,11 @@
+extends layout.pug
+
+block content
+  .container.mx-auto.p-8.bg-white.rounded-lg.shadow-md.mt-6(aria-label='Order confirmation page')
+    h1.text-3xl.font-bold.text-custom-red.mb-4 Order Confirmation
+    p.text-gray-600 Thank you for your purchase!
+    p.text-gray-600 Product: #{product.name}
+    p.text-gray-600 Quantity: #{quantity}
+    p.text-gray-600 Total: ₹#{product.price * quantity}
+    p.text-gray-600.mb-4 Your order has been placed successfully. (Placeholder)
+    a(href='/', class=['bg-blue-500', 'text-white', 'px-4', 'py-2', 'rounded', 'hover:bg-blue-600', 'focus:outline-none', 'focus:ring-2', 'focus:ring-blue-600'], aria-label='Back to home') Back to Home

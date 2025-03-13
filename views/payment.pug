@@ -1,0 +1,36 @@
+extends layout.pug
+
+block content
+  .container.mx-auto.p-8.bg-white.rounded-lg.shadow-md.mt-6(aria-label='Payment page')
+    h1.text-3xl.font-bold.text-custom-red.mb-4 Payment for #{product.name}
+    .flex(class=['flex-col', 'md:flex-row', 'gap-8'])
+      .w-full(class=['md:w-1/2'])
+        h2.text-2xl.font-semibold.text-gray-800.mb-4 Order Summary
+        p.text-gray-600 Product: #{product.name}
+        p.text-gray-600 Quantity: #{quantity}
+        p(class=['text-4xl', 'font-bold', 'text-custom-red', 'my-4']) Total: ₹#{product.price * quantity}
+        img(class=['w-full', 'h-56', 'object-cover', 'rounded-lg', 'mb-4'], src=product.images[0], alt=product.name, aria-label=`Image of ${product.name}`)
+        // UPI QR Code Section
+        h3.text-xl.font-semibold.text-gray-800.mb-2 UPI Payment QR Code
+        p.text-gray-600.mb-2 Scan the QR code below to complete the payment to the vendor.
+        img(class=['w-64', 'h-64', 'object-cover', 'rounded-lg', 'border', 'border-gray-300'], src='/images/upi-qr-placeholder.jpg', alt='UPI QR Code for payment', aria-label='UPI QR code for payment to vendor')
+        p.text-gray-600.text-sm.mt-2 Note: Replace '/images/upi-qr-placeholder.jpg' with the actual vendor UPI QR code image.
+      .w-full(class=['md:w-1/2'])
+        h2.text-2xl.font-semibold.text-gray-800.mb-4 Payment Details
+        form(action='/order-confirmation', method='post', aria-label='Payment form')
+          input(type='hidden', name='productId', value=product.id)
+          input(type='hidden', name='quantity', value=quantity)
+          .mb-4
+            label.block.text-gray-700.text-sm.font-bold.mb-2(for='name') Full Name
+            input(type='text', id='name', name='name', class=['w-full', 'border', 'rounded', 'p-2', 'focus:outline-none', 'focus:ring-2', 'focus:ring-blue-500'], required, aria-label='Full name')
+          .mb-4
+            label.block.text-gray-700.text-sm.font-bold.mb-2(for='email') Email
+            input(type='email', id='email', name='email', class=['w-full', 'border', 'rounded', 'p-2', 'focus:outline-none', 'focus:ring-2', 'focus:ring-blue-500'], required, aria-label='Email address')
+          .mb-4
+            label.block.text-gray-700.text-sm.font-bold.mb-2(for='address') Shipping Address
+            textarea(id='address', name='address', class=['w-full', 'border', 'rounded', 'p-2', 'focus:outline-none', 'focus:ring-2', 'focus:ring-blue-500'], required, aria-label='Shipping address')
+          .mb-4
+            p.text-gray-600 Payment Method: UPI (Scan the QR code above)
+          button(type='submit', class=['bg-blue-500', 'text-white', 'px-4', 'py-2', 'rounded', 'hover:bg-blue-600', 'focus:outline-none', 'focus:ring-2', 'focus:ring-blue-600'], aria-label='Complete purchase') Complete Purchase
+    .mt-8
+      a(href='/', class=['text-blue-600', 'hover:underline', 'focus:outline-none', 'focus:ring-2', 'focus:ring-blue-600'], aria-label='Back to home') Back to Home

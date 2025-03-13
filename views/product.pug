@@ -1,0 +1,41 @@
+extends layout.pug
+
+block content
+  if !product
+    .container(class=['mx-auto', 'p-8', 'bg-white', 'rounded-lg', 'shadow-md', 'mt-6'])
+      h1(class=['text-2xl', 'font-bold', 'text-custom-red']) Product Not Found
+      p(class=['text-gray-600']) The product you are looking for does not exist.
+  else
+    .container(class=['mx-auto', 'p-8', 'bg-white', 'rounded-lg', 'shadow-md', 'mt-6'], aria-label='Product detail page')
+      // Horizontal Scrollable Carousel for Product Images
+      .overflow-x-auto.whitespace-nowrap.pb-4(class=['mb-8'], aria-label='Product image carousel')
+        each image, index in product.images
+          img(class=['inline-block', 'w-1/2', 'md:w-1/3', 'h-96', 'object-cover', 'rounded-lg', 'mr-4', 'last:mr-0'], src=image, alt=`Image ${index + 1} of ${product.name}`, aria-label='Image ' + (index + 1) + ' of ' + product.name)
+      .flex(class=['flex-col', 'md:flex-row', 'gap-8'])
+        .w-full(class=['md:w-1/2'])
+          h1(class=['text-3xl', 'font-bold', 'text-gray-800', 'mb-2'], aria-label='Product name: ' + product.name)= product.name
+          p(class=['text-yellow-500', 'mb-2'], aria-label='Product rating') ★ 3.5 (Rating)
+          p(class=['text-gray-600', 'mb-4'], aria-label='Product description')= product.description
+          // Founder Section
+          .mt-4(class=['border-t', 'border-gray-300', 'pt-4'])
+            h3(class=['text-xl', 'font-semibold', 'text-custom-red', 'mb-2'], aria-label='Founder name') Founder: #{founders[0].name}
+            img(class=['w-32', 'h-32', 'object-cover', 'rounded-full', 'mb-2'], src=founders[0].image, alt=`${founders[0].name} portrait`, aria-label='Portrait of ' + founders[0].name)
+            p(class=['text-gray-700', 'text-base'], aria-label='Founder story')= founders[0].story
+        .w-full(class=['md:w-1/2'])
+          // Form for Quantity and Buy Now
+          form(action=`/payment/${product.id}`, method='get', aria-label='Purchase form')
+            .flex.items-center.mb-4(aria-label='Quantity selection')
+              button(type='button', class=['bg-gray-200', 'text-gray-700', 'px-3', 'py-1', 'rounded-l', 'focus:outline-none', 'focus:ring-2', 'focus:ring-gray-500'], onclick='this.nextElementSibling.stepDown();') -
+              input(type='number', name='quantity', min='1', value='1', class=['w-16', 'text-center', 'border', 'rounded', 'focus:outline-none', 'focus:ring-2', 'focus:ring-gray-500'], id='quantity')
+              button(type='button', class=['bg-gray-200', 'text-gray-700', 'px-3', 'py-1', 'rounded-r', 'focus:outline-none', 'focus:ring-2', 'focus:ring-gray-500'], onclick='this.previousElementSibling.stepUp();') +
+            // Buy Now Button as Form Submit
+            button(type='submit', class=['bg-red-500', 'text-white', 'px-4', 'py-2', 'rounded', 'hover:bg-red-600', 'focus:outline-none', 'focus:ring-2', 'focus:ring-red-600'], aria-label='Buy ' + product.name + ' now') Buy Now
+      .mt-12
+        h2(class=['text-2xl', 'font-semibold', 'text-custom-red', 'mb-4'], aria-label='Related products section') Items we think would look cool with this
+        .grid(class=['grid-cols-1', 'sm:grid-cols-2', 'lg:grid-cols-4', 'gap-8'], role='region', aria-label='Related products grid')
+          each relatedProduct in relatedProducts
+            .bg-white(class=['rounded-lg', 'shadow-md', 'p-6', 'flex', 'flex-col', 'items-center', 'hover:shadow-lg', 'transition-shadow'], role='article', aria-label='Related Product: ' + relatedProduct.name)
+              img(class=['w-full', 'h-56', 'object-cover', 'rounded-t-lg', 'mb-4'], src=relatedProduct.images[0], alt=relatedProduct.name, aria-label='Image of ' + relatedProduct.name)
+              h3(class=['text-xl', 'font-semibold', 'text-gray-800', 'mb-2'])= relatedProduct.name
+              p(class=['text-gray-600', 'mb-4']) ₹#{relatedProduct.price}
+              a(class=['text-blue-600', 'text-sm', 'hover:underline', 'focus:outline-none', 'focus:ring-2', 'focus:ring-blue-600'], href='/product/' + relatedProduct.id, aria-label='View more details for ' + relatedProduct.name) View More

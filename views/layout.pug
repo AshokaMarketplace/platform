@@ -1,27 +1,28 @@
-html(lang="en") 
-	head 
-		meta(lang="utf-8")
-		meta(charset="utf-8")
-		meta(name="viewport" content="width=device-width, initial-scale=1.0")
-
-		meta(name="theme-color" content="#aaaaaa")
-
-		//- TODO: create favicon head section
-
-		title!=title
-		meta(name="author" content="Ashoka University")
-		meta(name="description" content="The Ashoka Marketplace web platform")
-
-		block stylesheets
-			//- TODO: create reset, fonts, layout, forms, and flexbox stylesheets
-			link(rel="stylesheet" href="/stylesheets/main.css")
-
-		block scripts
-			//- TODO:: create layout scripts
-
-			if jump
-				script.
-					window.onload = window.location.hash = "#{jump}";
-
-	body: #Page
-		block content
+doctype html
+html(lang='en')
+  head
+    meta(charset='UTF-8')
+    meta(name='viewport', content='width=device-width, initial-scale=1.0')
+    title Ashoka Marketplace
+    link(rel='stylesheet', href='/stylesheets/main.css')
+    script(src='https://unpkg.com/htmx.org@1.9.10')
+  body.bg-gray-100
+    nav.bg-white.border-b.py-2.px-4.flex.justify-between.items-center(aria-label='Main navigation')
+      a(class=['text-custom-red', 'font-bold', 'text-lg', 'ml-4'], hx-get='/', hx-target='#main-content', aria-label='Ashoka Marketplace Home') Ashoka Marketplace
+       Marketplace
+      ul.flex.space-x-6
+        li
+          a(class=['text-gray-800', 'hover:text-custom-red', 'text-base', 'focus:outline-none', 'focus:ring-2', 'focus:ring-custom-red'], hx-get='/', hx-target='#main-content') Home
+        li
+          a(class=['text-gray-800', 'hover:text-custom-red', 'text-base', 'focus:outline-none', 'focus:ring-2', 'focus:ring-custom-red'], hx-get='/products', hx-target='#main-content') All Products
+        li
+          a(class=['text-gray-800', 'hover:text-custom-red', 'text-base', 'focus:outline-none', 'focus:ring-2', 'focus:ring-custom-red'], hx-get='/stories', hx-target='#main-content') Stories
+        li
+          a(class=['text-gray-800', 'hover:text-custom-red', 'text-base', 'focus:outline-none', 'focus:ring-2', 'focus:ring-custom-red'], hx-get='/about', hx-target='#main-content') About Us
+      .flex.items-center.space-x-4.mr-4
+        input#search(type='search', placeholder='Search...', class=['border', 'rounded', 'p-2', 'w-48', 'focus:outline-none', 'focus:ring-2', 'focus:ring-custom-red'], hx-get='/products', hx-target='#main-content', hx-trigger='keyup changed delay:500ms', hx-vals='js:{q: document.getElementById("search").value}', aria-label='Search products')
+        a(class=['text-gray-800', 'bg-white', 'border', 'rounded', 'px-3', 'py-1', 'hover:bg-gray-100', 'text-base', 'focus:outline-none', 'focus:ring-2', 'focus:ring-custom-red'], hx-get='/account', hx-target='#main-content') My Account
+    #main-content
+      block content
+    footer.bg-gray-200.py-4.text-center
+      p.text-gray-600.text-sm © 2025 Ashoka Marketplace. All rights reserved.
