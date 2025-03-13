@@ -140,3 +140,48 @@ exports.postSeller = (req, res) => {
 };
 
 
+
+exports.getSellerRegister = (req, res) => {
+	res.render('seller');
+};
+exports.postSellerRegister = (req, res) => {
+	const { name, email, upiId } = req.body;
+	const qrCodeFile = req.files ? req.files['qrCode']?.[0] : null;
+	const productImageFiles = req.files ? req.files['productImages'] || [] : [];
+
+	// Server-side validation
+	if (!name || !email || !upiId) {
+		return res.status(400).render('seller', { error: 'All fields (name, email, UPI ID) are required.' });
+	}
+
+	const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+	if (!emailRegex.test(email)) {
+		return res.status(400).render('seller', { error: 'Invalid email format.' });
+	}
+
+	const upiRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+$/;
+	if (!upiRegex.test(upiId)) {
+		return res.status(400).render('seller', { error: 'Invalid UPI ID format. Use username@bank (e.g., yourname@oksbi).' });
+	}
+
+	const existingVendor = vendors.find(v => v.email === email);
+	if (existingVendor) {
+		return res.status(400).render('seller', { error: 'A vendor with this email already exists.' });
+	}
+
+	const newVendor = {
+		id: vendors.length + 1,
+		name,
+		email,
+		upiId,
+		qrCodePath: qrCodeFile ? `/images/${qrCodeFile.filename}` : '/images/upi-qr-placeholder.jpg',
+		productImagePaths: productImageFiles.map(file => `/images/${file.filename}`)
+	};
+	vendors.push(newVendor);
+	const data = require('../data');
+	data.vendors = vendors;
+	fs.writeFileSync('./data.js', `module.exports = ${JSON.stringify(data, null, 2)};`);
+	res.redirect('/seller/register?success=true');
+};
+
+

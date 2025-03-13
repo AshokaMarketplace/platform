@@ -19,6 +19,8 @@ html(lang='en')
           a(class=['text-gray-800', 'hover:text-custom-red', 'text-base', 'focus:outline-none', 'focus:ring-2', 'focus:ring-custom-red'], hx-get='/stories', hx-target='#main-content') Stories
         li
           a(class=['text-gray-800', 'hover:text-custom-red', 'text-base', 'focus:outline-none', 'focus:ring-2', 'focus:ring-custom-red'], hx-get='/about', hx-target='#main-content') About Us
+        li
+              a(href='/seller/register', class=['bg-white', 'text-custom-red', 'px-4', 'py-2', 'rounded', 'hover:bg-gray-200', 'focus:outline-none', 'focus:ring-2', 'focus:ring-white'], aria-label='Become a Seller') Become a Seller  
       .flex.items-center.space-x-4.mr-4
         input#search(type='search', placeholder='Search...', class=['border', 'rounded', 'p-2', 'w-48', 'focus:outline-none', 'focus:ring-2', 'focus:ring-custom-red'], hx-get='/products', hx-target='#main-content', hx-trigger='keyup changed delay:500ms', hx-vals='js:{q: document.getElementById("search").value}', aria-label='Search products')
         a(class=['text-gray-800', 'bg-white', 'border', 'rounded', 'px-3', 'py-1', 'hover:bg-gray-100', 'text-base', 'focus:outline-none', 'focus:ring-2', 'focus:ring-custom-red'], hx-get='/account', hx-target='#main-content') My Account

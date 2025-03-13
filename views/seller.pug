@@ -1,20 +1,53 @@
 extends layout.pug
 
 block content
-  .container.mx-auto.p-6
-    h1.text-2xl.font-bold.text-red-600.mb-6 Seller Registration
-    form.max-w-md.mx-auto.space-y-4(hx-post='/seller', hx-target='#form-result', hx-swap='innerHTML')
+  .container.mx-auto.p-8.bg-white.rounded-lg.shadow-md.mt-6(aria-label='Seller registration page')
+    h1.text-3xl.font-bold.text-custom-red.mb-4 Seller Registration
+    p.text-gray-600.mb-6 Register as a seller to list your products on Ashoka Marketplace.
+
+    // Error message
+    if error
+      .bg-red-100.border-l-4.border-red-500.text-red-700.p-4.mb-6(role='alert')
+        p.font-bold Error
+        p= error
+
+    // Success message
+    if success === 'true'
+      .bg-green-100.border-l-4.border-green-500.text-green-700.p-4.mb-6(role='alert')
+        p.font-bold Success!
+        p Your registration as a seller has been completed. Start listing your products now!
+        a(href='/seller/register', class=['text-blue-600', 'hover:underline', 'focus:outline-none', 'focus:ring-2', 'focus:ring-blue-600'], aria-label='Register another seller') Register another seller
+
+    form(action='/seller/register', method='post', enctype='multipart/form-data', id='sellerForm', aria-label='Seller registration form')
       .mb-4
-        label.block.text-gray-700.font-medium.mb-1 Name
-        input(type='text', name='name', required, class='border rounded p-2 w-full focus:outline-none focus:ring-2 focus:ring-red-500')
+        label.block.text-gray-700.text-sm.font-bold.mb-2(for='name') Full Name
+        input(type='text', id='name', name='name', class=['w-full', 'border', 'rounded', 'p-2', 'focus:outline-none', 'focus:ring-2', 'focus:ring-blue-500'], required, aria-label='Full name')
       .mb-4
-        label.block.text-gray-700.font-medium.mb-1 Contact Info
-        input(type='email', name='contactInfo', required, class='border rounded p-2 w-full focus:outline-none focus:ring-2 focus:ring-red-500')
+        label.block.text-gray-700.text-sm.font-bold.mb-2(for='email') Email
+        input(type='email', id='email', name='email', class=['w-full', 'border', 'rounded', 'p-2', 'focus:outline-none', 'focus:ring-2', 'focus:ring-blue-500'], required, aria-label='Email address')
       .mb-4
-        label.block.text-gray-700.font-medium.mb-1 Product Type
-        input(type='text', name='productType', required, class='border rounded p-2 w-full focus:outline-none focus:ring-2 focus:ring-red-500')
+        label.block.text-gray-700.text-sm.font-bold.mb-2(for='upiId') UPI ID
+        input(type='text', id='upiId', name='upiId', class=['w-full', 'border', 'rounded', 'p-2', 'focus:outline-none', 'focus:ring-2', 'focus:ring-blue-500'], required, placeholder='e.g., yourname@upi', pattern='[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+', title='UPI ID must be in the format username@bank (e.g., yourname@oksbi)', aria-label='UPI ID')
       .mb-4
-        label.block.text-gray-700.font-medium.mb-1 Payment Details
-        input(type='text', name='paymentDetails', required, class='border rounded p-2 w-full focus:outline-none focus:ring-2 focus:ring-red-500')
-      button(type='submit', class='bg-red-500.text-white.px-4.py-2.rounded.hover:bg-red-600.transition-colors') Submit
-      #form-result
+        label.block.text-gray-700.text-sm.font-bold.mb-2(for='qrCode') UPI QR Code Image (Optional)
+        input(type='file', id='qrCode', name='qrCode', accept='image/*', class=['w-full', 'border', 'rounded', 'p-2', 'focus:outline-none', 'focus:ring-2', 'focus:ring-blue-500'], aria-label='Upload UPI QR code image')
+      .mb-4
+        label.block.text-gray-700.text-sm.font-bold.mb-2(for='productImages') Product Images (Up to 5, Optional)
+        input(type='file', id='productImages', name='productImages', accept='image/*', multiple, class=['w-full', 'border', 'rounded', 'p-2', 'focus:outline-none', 'focus:ring-2', 'focus:ring-blue-500'], aria-label='Upload product images')
+      button(type='submit', id='submitButton', class=['bg-blue-500', 'text-white', 'px-4', 'py-2', 'rounded', 'hover:bg-blue-600', 'focus:outline-none', 'focus:ring-2', 'focus:ring-blue-600'], aria-label='Register as seller') Register
+    .mt-4
+      a(href='/', class=['text-blue-600', 'hover:underline', 'focus:outline-none', 'focus:ring-2', 'focus:ring-blue-600'], aria-label='Back to home') Back to Home
+
+  script.
+    document.addEventListener('DOMContentLoaded', () => {
+      const urlParams = new URLSearchParams(window.location.search);
+      if (urlParams.get('success') === 'true') {
+        document.getElementById('sellerForm').reset();
+      }
+
+      document.getElementById('sellerForm').addEventListener('submit', (e) => {
+        const submitButton = document.getElementById('submitButton');
+        submitButton.disabled = true;
+        submitButton.innerHTML = 'Registering...';
+      });
+    });
