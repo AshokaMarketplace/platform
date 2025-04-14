@@ -1,6 +1,108 @@
 extends layout.pug
 
 block content
-  .container.mx-auto.p-6
-    h1.text-4xl.font-bold.text-red-600.mb-6 Test Tailwind CSS
-    p.text-gray-700.mb-4 This should be styled with Tailwind!
+  // Hero Section with Animation
+  section.hero-section.min-h-[80vh].flex.items-center.relative.overflow-hidden
+    .absolute.inset-0.bg-gradient-to-br.from-primary/5.via-transparent.to-accent-pink/10.animate-gradient
+    .container.mx-auto.px-4.relative.z-10
+      .max-w-4xl.mx-auto.text-center.animate-fade-in
+        h1.text-6xl.md:text-7xl.font-extrabold.mb-8.leading-tight
+          span.text-primary.animate-slide-up Your Campus 
+          br
+          span.text-gradient.animate-slide-up.delay-100 Marketplace
+        p.text-xl.text-gray-600.mb-12.max-w-2xl.mx-auto.animate-fade-in.delay-200
+          | Connect, Buy, and Sell within your trusted campus community.
+        
+        .flex.flex-wrap.justify-center.gap-4.mb-16.animate-fade-in.delay-300
+          each category in ['All Categories', 'Electronics', 'Fashion', 'Books', 'Accessories']
+            button.category-btn= category
+
+        .absolute.top-4.right-4.flex.items-center.gap-2.animate-fade-in.delay-400
+          .flex.items-center.gap-1
+            each brand in [1, 2, 3]
+              img.w-8.h-8.rounded-full.border-2.border-white.shadow-lg(src=`/images/brand-${brand}.jpg` alt=`Brand ${brand}`)
+          span.text-sm.font-medium.text-gray-600 10+ Brands Available
+
+  // Featured Products with Hover Effects
+  section.py-16.bg-gradient-to-b.from-white.to-gray-50
+    .container.mx-auto.px-4
+      .flex.justify-between.items-center.mb-12.animate-fade-in
+        h2.text-3xl.font-bold.text-gray-800
+          span.text-primary Popular 
+          | Products
+        .flex.gap-4
+          each category in ['Trending', 'New', 'Best Sellers']
+            button.filter-btn= category
+
+      .grid.grid-cols-1.md:grid-cols-2.lg:grid-cols-3.xl:grid-cols-4.gap-8.mb-12
+        each product, index in Array(8).fill()
+          .product-card.group.animate-fade-in(style=`animation-delay: ${index * 100}ms`)
+            .relative.overflow-hidden.rounded-xl
+              img.w-full.aspect-square.object-cover.transform.group-hover:scale-110.transition-transform.duration-700(
+                src=`/images/product-${(index % 4) + 1}.jpg`
+                alt='Product Image'
+              )
+              .absolute.inset-0.bg-gradient-to-t.from-black/60.to-transparent.opacity-0.group-hover:opacity-100.transition-opacity.duration-300
+              button.absolute.top-4.right-4.p-2.bg-white.rounded-full.shadow-lg.hover:scale-110.transition-transform
+                svg.w-5.h-5.text-primary(xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='currentColor')
+                  path(stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z')
+            .p-6
+              .flex.justify-between.items-start.mb-4
+                div
+                  h3.text-lg.font-semibold.text-gray-800.mb-2 Premium Product
+                  p.text-sm.text-gray-500 High quality campus essential
+                span.badge-primary New
+              .flex.justify-between.items-center
+                span.text-2xl.font-bold.text-primary ₹2,999
+                button.btn-primary.py-2.px-4 View Details
+
+      .text-center.animate-fade-in
+        a(href='/products').btn-secondary.inline-flex.items-center.gap-2
+          span View All Products
+          svg.w-5.h-5(xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='currentColor')
+            path(stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M17 8l4 4m0 0l-4 4m4-4H3')
+
+  // Categories Section with Grid
+  section.py-16.bg-white
+    .container.mx-auto.px-4
+      .text-center.mb-12.animate-fade-in
+        h2.text-3xl.font-bold.text-gray-800.mb-4 Shop by Category
+        p.text-gray-600.max-w-2xl.mx-auto Find exactly what you need from our curated collection
+
+      .grid.grid-cols-2.md:grid-cols-3.lg:grid-cols-4.gap-6.mb-12
+        each category, index in ['Electronics', 'Fashion', 'Books', 'Sports', 'Art', 'Music', 'Stationery', 'Others']
+          .category-card.group.animate-fade-in(style=`animation-delay: ${index * 100}ms`)
+            .relative.aspect-square.rounded-xl.overflow-hidden
+              img.w-full.h-full.object-cover.transform.group-hover:scale-105.transition-transform.duration-500(
+                src=`/images/category-${(index % 4) + 1}.jpg`
+                alt=category
+              )
+              .absolute.inset-0.bg-gradient-to-t.from-black/60.to-transparent
+              .absolute.inset-0.flex.items-center.justify-center
+                h3.text-xl.font-bold.text-white= category
+
+  // Featured Banner
+  section.relative.h-96.overflow-hidden.my-16.animate-fade-in
+    img.absolute.inset-0.w-full.h-full.object-cover(src='/images/banner-hands.jpg' alt='Banner')
+    .absolute.inset-0.bg-gradient-to-r.from-primary.to-transparent
+    .container.mx-auto.h-full.flex.items-center
+      .max-w-lg.text-white.px-4.animate-slide-up
+        h2.text-4xl.font-bold.mb-6 Campus Deals
+        p.text-lg.mb-8 Get exclusive discounts on premium products curated for campus life.
+        button.btn-secondary.bg-white.text-primary.hover:bg-gray-100
+          span Shop Now
+          svg.w-5.h-5.ml-2.inline(xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='currentColor')
+            path(stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M17 8l4 4m0 0l-4 4m4-4H3')
+
+  // Trust Badges Section
+  section.py-16.bg-gray-50
+    .container.mx-auto.px-4
+      .grid.grid-cols-2.md:grid-cols-4.gap-8.text-center
+        each badge in ['Verified Sellers', 'Secure Payments', 'Campus Delivery', 'Student Support']
+          .trust-badge.animate-fade-in
+            .bg-white.rounded-xl.p-6.shadow-soft.hover:shadow-hover.transition-shadow
+              .icon-wrapper.w-16.h-16.mx-auto.mb-4.rounded-full.bg-primary/10.flex.items-center.justify-center
+                svg.w-8.h-8.text-primary(xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='currentColor')
+                  path(stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M5 13l4 4L19 7')
+              h4.font-semibold.text-gray-800.mb-2= badge
+              p.text-sm.text-gray-600 Ensuring a safe and reliable marketplace experience

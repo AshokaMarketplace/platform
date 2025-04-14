@@ -1,0 +1,33 @@
+extends layout
+
+block content
+  .container.py-8.px-4
+    .max-w-3xl.mx-auto.bg-white.rounded-lg.shadow-lg.overflow-hidden
+      .p-8
+        h1.text-3xl.font-bold.mb-6.text-gray-800 Order Details
+        
+        .bg-gray-50.p-6.rounded-lg.mb-8
+          .grid.grid-cols-1.gap-4
+            .flex.justify-between.py-2.border-b.border-gray-200
+              span.text-gray-600 Order ID:
+              span.font-medium.text-gray-800 #{orderId}
+            .flex.justify-between.py-2.border-b.border-gray-200
+              span.text-gray-600 Customer Name:
+              span.font-medium.text-gray-800 #{customerName}
+            .flex.justify-between.py-2.border-b.border-gray-200
+              span.text-gray-600 Product:
+              span.font-medium.text-gray-800 #{productName}
+            .flex.justify-between.py-2.border-b.border-gray-200
+              span.text-gray-600 Amount:
+              span.font-medium.text-gray-800 ₹#{amount}
+            .flex.justify-between.py-2
+              span.text-gray-600 Status:
+              span.font-medium(class=status === 'confirmed' ? 'text-green-600' : 'text-yellow-600') #{status}
+        
+        if status !== 'confirmed'
+          .flex.justify-end.gap-4
+            button.px-6.py-3.bg-gray-100.text-gray-700.rounded-lg.hover:bg-gray-200.transition-colors(onclick="window.close()") Close
+            a.px-6.py-3.bg-green-600.text-white.rounded-lg.hover:bg-green-700.transition-colors(href=`/vendor/quick-confirm/${orderId}`) Confirm Order
+        else
+          .flex.justify-end
+            button.px-6.py-3.bg-gray-100.text-gray-700.rounded-lg.hover:bg-gray-200.transition-colors(onclick="window.close()") Close 

@@ -1,0 +1,128 @@
+extends layout.pug
+
+block content
+  // Hero Section
+  section(class="relative min-h-[60vh] flex items-center justify-center overflow-hidden bg-gradient-to-br from-primary/5 to-accent-pink/10")
+    // Animated background elements
+    div(class="absolute inset-0 pattern-grid opacity-5")
+    div(class="absolute top-0 right-0 w-1/2 h-1/2 bg-gradient-to-br from-primary/10 to-accent-pink/10 blur-3xl animate-pulse")
+    div(class="absolute bottom-0 left-0 w-1/2 h-1/2 bg-gradient-to-tr from-accent-purple/10 to-primary/10 blur-3xl animate-pulse delay-1000")
+    
+    div(class="container mx-auto px-4 relative z-10")
+      div(class="max-w-4xl mx-auto text-center")
+        // Founder Avatar
+        div(class="w-32 h-32 mx-auto mb-6 rounded-full overflow-hidden border-4 border-white shadow-xl")
+          img(
+            class="w-full h-full object-cover"
+            src=founder.image
+            alt=founder.name
+          )
+        h1(class="text-5xl font-bold mb-4")
+          span(class="bg-gradient-to-r from-primary via-accent-purple to-accent-pink bg-clip-text text-transparent animate-gradient")= founder.name
+        p(class="text-xl text-gray-600 mb-2")= founder.title
+        p(class="text-gray-500")= founder.category || 'General'
+        
+        // Social Links
+        div(class="flex justify-center gap-4 mt-6")
+          each social in founder.socials
+            a(
+              href=social.url
+              target="_blank"
+              class="w-10 h-10 flex items-center justify-center rounded-full bg-white/80 backdrop-blur-sm hover:bg-white transition-colors group"
+            )
+              svg(
+                class="w-5 h-5 text-gray-600 group-hover:text-primary transition-colors"
+                fill="currentColor"
+                viewBox="0 0 24 24"
+              )
+                path(d=social.icon)
+
+  // Founder Story
+  section(class="py-20 bg-white")
+    div(class="container mx-auto px-4")
+      div(class="max-w-4xl mx-auto")
+        h2(class="text-3xl font-bold text-gray-800 mb-8") Founder's Story
+        div(class="prose prose-lg max-w-none")
+          p(class="text-gray-600 leading-relaxed")= founder.story
+
+  // Photo Gallery
+  section(class="py-20 bg-gray-50")
+    div(class="container mx-auto px-4")
+      h2(class="text-3xl font-bold text-gray-800 mb-8 text-center") Gallery
+      div(class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8")
+        each photo in founder.gallery
+          div(class="group relative aspect-square overflow-hidden rounded-xl shadow-lg hover:shadow-xl transition-all duration-300")
+            img(
+              class="w-full h-full object-cover transform group-hover:scale-110 transition-transform duration-700"
+              src=photo.url
+              alt=photo.caption
+            )
+            div(class="absolute inset-0 bg-gradient-to-t from-black/60 via-black/30 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300")
+            div(class="absolute bottom-0 left-0 p-4 text-white opacity-0 group-hover:opacity-100 transition-opacity duration-300")
+              p(class="text-sm")= photo.caption
+
+  // Founder's Products
+  section(class="py-20 bg-white")
+    div(class="container mx-auto px-4")
+      h2(class="text-3xl font-bold text-gray-800 mb-8 text-center") Products
+      div(class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8")
+        each product in founder.products
+          div(class="group bg-white rounded-xl shadow-lg overflow-hidden hover:shadow-xl transition-all duration-300")
+            // Product Image
+            div(class="relative aspect-square overflow-hidden")
+              img(
+                class="w-full h-full object-cover transform group-hover:scale-110 transition-transform duration-700"
+                src=product.image
+                alt=product.name
+              )
+              div(class="absolute inset-0 bg-gradient-to-t from-black/60 via-black/30 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300")
+            
+            // Product Info
+            div(class="p-6")
+              h3(class="text-xl font-bold text-gray-800 mb-2 group-hover:text-primary transition-colors")= product.name
+              p(class="text-gray-600 mb-4")= product.description
+              div(class="flex items-center justify-between")
+                span(class="text-lg font-bold text-primary")= product.price
+                a(
+                  href=`/product/${product.id}`
+                  class="inline-flex items-center gap-2 text-primary font-medium hover:text-primary-dark transition-colors group/btn"
+                )
+                  span View Details
+                  svg(
+                    class="w-4 h-4 transform group-hover/btn:translate-x-1 transition-transform"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  )
+                    path(
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      stroke-width="2"
+                      d="M17 8l4 4m0 0l-4 4m4-4H3"
+                    )
+
+  style.
+    @keyframes float {
+      0%, 100% { transform: translateY(0px); }
+      50% { transform: translateY(-20px); }
+    }
+    
+    @keyframes gradient {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
+    
+    .animate-float {
+      animation: float 6s ease-in-out infinite;
+    }
+    
+    .animate-gradient {
+      background-size: 200% auto;
+      animation: gradient 8s linear infinite;
+    }
+    
+    .pattern-grid {
+      background-image: radial-gradient(rgba(0, 0, 0, 0.1) 1px, transparent 1px);
+      background-size: 20px 20px;
+    } 

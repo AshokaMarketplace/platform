@@ -5,6 +5,7 @@ const logger = require('morgan');
 const upload = require('./config/multer'); // Import upload from config/multer.js
 
 const indexRouter = require('./routes/index');
+const paymentRoutes = require('./routes/payment');
 
 const app = express();
 
@@ -18,6 +19,7 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', indexRouter);
+app.use('/', paymentRoutes);
 
 // Error handler
 app.use((req, res, next) => {

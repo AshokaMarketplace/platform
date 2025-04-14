@@ -1,0 +1,172 @@
+extends layout
+
+block content
+  section(class="relative min-h-screen py-12 overflow-hidden")
+    // Animated background elements
+    div(class="absolute inset-0 bg-gradient-to-br from-primary/5 via-accent-purple/5 to-accent-pink/5")
+    div(class="absolute inset-0 bg-[url('/images/wavy-pattern.svg')] opacity-10 animate-float")
+    div(class="absolute top-0 right-0 w-1/2 h-1/2 bg-gradient-to-br from-primary/10 to-accent-pink/10 blur-3xl animate-pulse")
+    div(class="absolute bottom-0 left-0 w-1/2 h-1/2 bg-gradient-to-tr from-accent-purple/10 to-primary/10 blur-3xl animate-pulse delay-1000")
+    
+    div(class="container mx-auto px-4 relative z-10")
+      div(class="max-w-2xl mx-auto text-center")
+        // Order Status Card
+        div(class="bg-white/80 backdrop-blur-md rounded-2xl p-8 shadow-lg animate-fade-in")
+          // Loading Animation
+          div(class="mb-8 loading-spinner")
+            div(class="w-24 h-24 mx-auto rounded-full bg-primary/10 flex items-center justify-center animate-spin-slow")
+              div(class="w-20 h-20 rounded-full border-4 border-primary border-t-transparent")
+          
+          // Status Text
+          h1(class="text-3xl font-bold text-gray-800 mb-4 status-text") Order Pending
+          p(class="text-gray-600 mb-8 status-message") We're waiting for the seller to confirm your payment
+          
+          // Order Details
+          div(class="space-y-4 text-left bg-gray-50 rounded-xl p-6 mb-8")
+            div(class="flex justify-between items-center")
+              span(class="text-gray-600") Order ID
+              span(class="font-medium text-gray-800")= orderId
+            div(class="flex justify-between items-center")
+              span(class="text-gray-600") Product
+              span(class="font-medium text-gray-800")= productName
+            div(class="flex justify-between items-center")
+              span(class="text-gray-600") Amount Paid
+              span(class="font-medium text-gray-800") ₹#{amount}
+            div(class="flex justify-between items-center")
+              span(class="text-gray-600") Payment Method
+              span(class="font-medium text-gray-800") UPI
+          
+          // Status Timeline
+          div(class="flex items-center justify-between max-w-xs mx-auto mb-8")
+            div(class="flex flex-col items-center")
+              div(class="w-8 h-8 rounded-full bg-primary text-white flex items-center justify-center mb-2")
+                svg(class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24")
+                  path(stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7")
+              span(class="text-sm text-gray-600") Payment Made
+            div(class="flex-1 h-1 bg-gray-200 mx-2")
+            div(class="flex flex-col items-center")
+              div(class="w-8 h-8 rounded-full bg-gray-200 flex items-center justify-center mb-2 confirmation-circle animate-pulse")
+                div(class="w-3 h-3 bg-gray-400 rounded-full")
+              span(class="text-sm text-gray-600") Confirmation Pending
+          
+          // Auto-refresh Note
+          p(class="text-sm text-gray-500 mb-6") This page will automatically check for updates every 5 seconds
+          
+          // Manual Refresh Button
+          button#refreshButton(
+            type="button"
+            class="inline-flex items-center gap-2 px-6 py-3 bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200 transition-colors"
+          )
+            svg(class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24")
+              path(stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15")
+            span Refresh Status
+          
+          // Contact Support
+          div(class="mt-8 pt-8 border-t border-gray-200")
+            p(class="text-sm text-gray-600") Having issues? 
+              a(href="/support" class="text-primary hover:underline") Contact Support
+
+  style.
+    @keyframes float {
+      0%, 100% { transform: translateY(0px); }
+      50% { transform: translateY(-20px); }
+    }
+    
+    .animate-float {
+      animation: float 6s ease-in-out infinite;
+    }
+    
+    .animate-fade-in {
+      animation: fadeIn 0.6s ease-out forwards;
+    }
+    
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    
+    .animate-spin-slow {
+      animation: spin 2s linear infinite;
+    }
+    
+    @keyframes spin {
+      from { transform: rotate(0deg); }
+      to { transform: rotate(360deg); }
+    }
+
+  script.
+    // Wait for the DOM to be fully loaded
+    document.addEventListener('DOMContentLoaded', function() {
+      const orderId = '#{orderId}';
+      let isConfirmed = false;
+
+      function updateOrderStatus(status) {
+        if (isConfirmed) return; // Prevent multiple updates
+
+        const statusText = document.querySelector('.status-text');
+        const statusMessage = document.querySelector('.status-message');
+        const loadingSpinner = document.querySelector('.loading-spinner');
+        const confirmationCircle = document.querySelector('.confirmation-circle');
+
+        if (status === 'confirmed') {
+          isConfirmed = true;
+          
+          // Update status text and message
+          statusText.textContent = 'Order Confirmed!';
+          statusText.classList.add('text-green-600');
+          statusMessage.textContent = 'Payment has been confirmed by the seller';
+          
+          // Hide loading spinner
+          loadingSpinner.style.display = 'none';
+          
+          // Update confirmation circle
+          confirmationCircle.classList.remove('bg-gray-200', 'animate-pulse');
+          confirmationCircle.classList.add('bg-primary');
+          confirmationCircle.innerHTML = '<svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>';
+          
+          // Redirect after showing confirmation
+          setTimeout(() => {
+            window.location.href = '/order-confirmed/' + orderId;
+          }, 2000);
+        }
+      }
+
+      function checkOrderStatus() {
+        if (isConfirmed) return; // Don't check if already confirmed
+
+        fetch('/api/check-order-status/' + orderId)
+          .then(response => {
+            if (!response.ok) {
+              throw new Error('Network response was not ok');
+            }
+            return response.json();
+          })
+          .then(data => {
+            if (data.status === 'confirmed') {
+              updateOrderStatus('confirmed');
+            }
+          })
+          .catch(error => {
+            console.error('Error checking order status:', error);
+          });
+      }
+
+      // Add click event listener to refresh button
+      const refreshButton = document.getElementById('refreshButton');
+      if (refreshButton) {
+        refreshButton.addEventListener('click', checkOrderStatus);
+      }
+      
+      // Initial check
+      checkOrderStatus();
+      
+      // Set up interval for periodic checks
+      window.statusInterval = setInterval(checkOrderStatus, 5000);
+      
+      // Clean up on page unload
+      window.addEventListener('beforeunload', () => {
+        if (window.statusInterval) {
+          clearInterval(window.statusInterval);
+        }
+      });
+    });
