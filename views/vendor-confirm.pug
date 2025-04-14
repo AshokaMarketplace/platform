@@ -1,0 +1,40 @@
+extends layout
+
+block content
+  .container.py-8.px-4
+    .max-w-3xl.mx-auto.bg-white.rounded-lg.shadow-lg.overflow-hidden
+      .p-8
+        if error
+          .bg-red-100.border.border-red-400.text-red-700.px-4.py-3.rounded.relative.mb-6(role='alert')
+            strong.font-bold Error: 
+            span.block.sm:inline #{error}
+        else
+          h1.text-3xl.font-bold.mb-6.text-gray-800 Vendor Order Confirmation
+          
+          .bg-gray-50.p-6.rounded-lg.mb-8
+            h2.text-xl.font-semibold.mb-4.text-gray-700 Order Details
+            .grid.grid-cols-1.gap-4
+              .flex.justify-between.py-2.border-b.border-gray-200
+                span.text-gray-600 Order ID:
+                span.font-medium.text-gray-800 #{orderId}
+              .flex.justify-between.py-2.border-b.border-gray-200
+                span.text-gray-600 Customer Name:
+                span.font-medium.text-gray-800 #{customerName}
+              .flex.justify-between.py-2.border-b.border-gray-200
+                span.text-gray-600 Product:
+                span.font-medium.text-gray-800 #{productName}
+              .flex.justify-between.py-2.border-b.border-gray-200
+                span.text-gray-600 Amount:
+                span.font-medium.text-gray-800 ₹#{amount}
+              .flex.justify-between.py-2
+                span.text-gray-600 Status:
+                span.font-medium(class=order.status === 'confirmed' ? 'text-green-600' : 'text-yellow-600') #{order.status}
+          
+          if order.status !== 'confirmed'
+            form(action=`/vendor/confirm/${orderId}/process` method='POST')
+              .flex.justify-end.gap-4
+                button.px-6.py-3.bg-gray-100.text-gray-700.rounded-lg.hover:bg-gray-200.transition-colors(type='button' onclick='window.close()') Cancel
+                button.px-6.py-3.bg-green-600.text-white.rounded-lg.hover:bg-green-700.transition-colors(type='submit') Confirm Order
+          else
+            .flex.justify-end
+              button.px-6.py-3.bg-gray-100.text-gray-700.rounded-lg.hover:bg-gray-200.transition-colors(type='button' onclick='window.close()') Close 

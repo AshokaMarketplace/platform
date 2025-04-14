@@ -3,7 +3,7 @@ const fs = require('fs');
 
 let orders = require('../orders.json'); // Path relative to controllers directory
 exports.getHome = (req, res) => {
-	res.render('home', { products });
+	res.render('home', { products, path: '/' });
 };
 
 exports.getProducts = (req, res) => {
@@ -25,7 +25,12 @@ exports.getProducts = (req, res) => {
 				break;
 		}
 	}
-	res.render('products', { products: filteredProducts });
+	const categories = ['Electronics', 'Fashion', 'Books', 'Accessories'];
+	res.render('products', {
+		products: filteredProducts,
+		categories,
+		path: '/products'
+	});
 };
 
 exports.getProduct = (req, res) => {
@@ -122,15 +127,15 @@ exports.getDashboard = (req, res) => {
 };
 
 exports.getAbout = (req, res) => {
-	res.render('about');
+	res.render('about', { path: '/about' });
 };
 
 exports.getStories = (req, res) => {
-	res.render('stories', { founders });
+	res.render('stories', { founders, path: '/stories' });
 };
 
 exports.getAccount = (req, res) => {
-	res.render('account');
+	res.render('account', { path: '/account' });
 };
 
 exports.postSeller = (req, res) => {
@@ -138,8 +143,6 @@ exports.postSeller = (req, res) => {
 	console.log('Seller form submitted:', req.body);
 	res.send('<p class="text-green-600">Seller registration submitted!</p>');
 };
-
-
 
 exports.getSellerRegister = (req, res) => {
 	res.render('seller');

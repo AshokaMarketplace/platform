@@ -1,0 +1,59 @@
+extends layout
+
+block content
+  .container.py-8.px-4
+    .max-w-2xl.mx-auto.bg-white.rounded-lg.shadow-lg.overflow-hidden
+      .p-8.text-center
+        // Success Icon
+        .w-20.h-20.mx-auto.mb-6.text-green-500
+          svg(
+            class="w-24 h-24 mx-auto text-green-500"
+            xmlns="http://www.w3.org/2000/svg"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+          )
+            path(
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M5 13l4 4L19 7"
+            )
+        
+        // Success Message
+        h1.text-3xl.font-bold.text-gray-800.mb-4 Order Confirmed!
+        p.text-gray-600.mb-8 Thank you for your purchase. Your order has been confirmed.
+        
+        // Order Details
+        .bg-gray-50.rounded-lg.p-6.mb-8.text-left
+          h2.text-xl.font-semibold.mb-4.text-gray-700 Order Details
+          .space-y-3
+            .flex.justify-between
+              span.text-gray-600 Order ID:
+              span.font-medium.text-gray-800 #{orderId}
+            .flex.justify-between
+              span.text-gray-600 Product:
+              span.font-medium.text-gray-800 #{productName}
+            .flex.justify-between
+              span.text-gray-600 Amount:
+              span.font-medium.text-gray-800 ₹#{amount}
+        
+        // Action Buttons
+        .space-y-4
+          a(
+            href="/products"
+            class="block w-full bg-blue-600 text-white text-lg font-medium py-4 rounded-xl hover:bg-blue-700 transform hover:-translate-y-1 transition-all duration-300 shadow-lg hover:shadow-xl"
+          ) Continue Shopping
+          a(
+            href="/"
+            class="block text-center mt-4 text-gray-600 hover:text-gray-800"
+          ) Return Home
+
+  style.
+    .transform {
+      transform: translateY(0);
+      transition: transform 0.3s ease;
+    }
+    .hover\\:-translate-y-1:hover {
+      transform: translateY(-4px);
+    } 

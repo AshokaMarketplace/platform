@@ -6,6 +6,7 @@ const express = require('express');
 const router = express.Router();
 const controllers = require('../controllers/index');
 const upload = require('../config/multer');
+const founders = require('../data/founders');
 
 router.get('/', controllers.getHome);
 router.get('/products', controllers.getProducts);
@@ -24,6 +25,16 @@ router.get('/seller/register', controllers.getSellerRegister);
 router.post('/seller/register', upload, controllers.postSellerRegister);
 router.get('/test', (req, res) => {
     res.send('<p class="text-green-600">HTMX works!</p>');
+});
+router.get('/founder/:id', (req, res) => {
+    const founder = founders[req.params.id];
+    if (!founder) {
+        return res.status(404).render('error', {
+            message: 'Founder not found',
+            error: { status: 404 }
+        });
+    }
+    res.render('founder', { founder });
 });
 
 module.exports = router;
