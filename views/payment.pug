@@ -57,13 +57,14 @@ block content
 
           // Customer Information and Payment Form
           div(class="bg-white/80 backdrop-blur-md rounded-2xl p-8 shadow-lg animate-fade-in delay-100")
-            form(action="/process-payment" method="POST")
+            form(action="/payment/process-payment" method="POST")
               // Hidden fields for product details
               input(type="hidden" name="productId" value=product.id)
               input(type="hidden" name="productName" value=product.name)
               input(type="hidden" name="productPrice" value=product.price)
               input(type="hidden" name="quantity" value=quantity)
               input(type="hidden" name="totalAmount" value=product.price * quantity)
+              input(type="hidden" name="founderId" value=product.founderId)
 
               // Customer Information Section
               div(class="mb-8")
@@ -125,12 +126,23 @@ block content
                   // UPI QR Code
                   div(class="bg-white rounded-xl p-6 text-center border-2 border-dashed border-gray-200 hover:border-primary transition-colors")
                     div(class="max-w-[200px] mx-auto mb-4")
-                      img(
-                        class="w-full rounded-lg shadow-md"
-                        src='/images/upi-qr-placeholder.jpg'
-                        alt='UPI QR Code'
-                      )
-                    p(class="text-sm text-gray-500") Scan QR code with any UPI app
+                      if founder && founder.upiQrCode
+                        img(
+                          class="w-full rounded-lg shadow-md"
+                          src=founder.upiQrCode
+                          alt='UPI QR Code'
+                        )
+                      else
+                        img(
+                          class="w-full rounded-lg shadow-md"
+                          src='/images/upi-qr-placeholder.jpg'
+                          alt='UPI QR Code'
+                        )
+                    if founder && founder.upiId
+                      p(class="text-sm text-gray-500 mb-2") Scan QR code with any UPI app
+                      p(class="text-sm font-medium text-gray-700") UPI ID: #{founder.upiId}
+                    else
+                      p(class="text-sm text-gray-500") Scan QR code with any UPI app
 
               // Proceed to Pay Button
               button(

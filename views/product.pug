@@ -2,7 +2,7 @@ extends layout.pug
 
 block content
   if !product
-    .container.mx-auto.px-4.py-12
+    div(class="py-12")
       div(class="max-w-2xl mx-auto text-center bg-white/80 backdrop-blur-md rounded-xl p-8 shadow-lg")
         h1(class="text-3xl font-bold text-gray-800 mb-4") Product Not Found
         p(class="text-gray-600 mb-6") The product you are looking for does not exist.
@@ -14,20 +14,12 @@ block content
             path(stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18")
           span Back to Products
   else
-    // Hero Section with Animated Background
     section(class="relative py-12 overflow-hidden")
-      // Animated background elements
-      div(class="absolute inset-0 bg-gradient-to-br from-primary/5 via-accent-purple/5 to-accent-pink/5")
-      div(class="absolute inset-0 bg-[url('/images/wavy-pattern.svg')] opacity-10 animate-float")
-      div(class="absolute top-0 right-0 w-1/2 h-1/2 bg-gradient-to-br from-primary/10 to-accent-pink/10 blur-3xl animate-pulse")
-      div(class="absolute bottom-0 left-0 w-1/2 h-1/2 bg-gradient-to-tr from-accent-purple/10 to-primary/10 blur-3xl animate-pulse delay-1000")
-      
       div(class="container mx-auto px-4 relative z-10")
-        // Product Gallery Section
-        div(class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-start")
+        div(class="flex flex-col lg:flex-row gap-8 items-start")
           // Image Gallery
-          div(class="space-y-4")
-            div(class="relative aspect-square rounded-2xl overflow-hidden bg-white shadow-lg group")
+          div(class="w-full lg:w-1/2 space-y-4")
+            div(class="relative aspect-square rounded-2xl overflow-hidden bg-white shadow-lg group max-w-md mx-auto")
               img(
                 class="w-full h-full object-cover transform group-hover:scale-110 transition-transform duration-700"
                 src=product.images[0]
@@ -36,8 +28,8 @@ block content
               div(class="absolute inset-0 bg-gradient-to-t from-black/30 to-transparent opacity-0 group-hover:opacity-100 transition-opacity")
             
             // Thumbnail Gallery
-            div(class="grid grid-cols-4 gap-4")
-              each image, index in product.images
+            div(class="grid grid-cols-4 gap-4 max-w-md mx-auto")
+        each image, index in product.images
                 button(
                   class="relative aspect-square rounded-lg overflow-hidden bg-white shadow-md hover:shadow-lg transition-shadow"
                   onclick=`showImage(${index})`
@@ -49,164 +41,171 @@ block content
                   )
           
           // Product Info Section
-          div(class="bg-white/80 backdrop-blur-md rounded-2xl p-8 shadow-lg animate-fade-in")
-            // Category Badge
-            div(class="inline-block px-3 py-1 rounded-full text-sm font-medium bg-primary/10 text-primary mb-6")
-              = product.category || 'General'
-            
-            h1(class="text-4xl font-bold text-gray-800 mb-4")= product.name
-            
-            // Rating Section
-            div(class="flex items-center gap-2 mb-6")
-              div(class="flex text-yellow-400")
-                each star in Array(5).fill()
-                  svg(class="w-5 h-5 fill-current" viewBox="0 0 20 20")
-                    path(d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118l-2.8-2.034c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z")
-              span(class="text-gray-600") 4.5 (125 reviews)
-            
-            // Price and Description
-            p(class="text-3xl font-bold text-primary mb-4") ₹#{product.price}
-            p(class="text-gray-600 text-lg leading-relaxed mb-8")= product.description
-            
-            // Purchase Form
-            form(action=`/payment/${product.id}` method="get" class="space-y-6")
-              // Quantity Selector
-              div(class="flex items-center gap-4")
-                label(class="text-gray-700 font-medium") Quantity:
-                div(class="flex items-center")
-                  button(
-                    type="button"
-                    class="w-10 h-10 rounded-l-lg bg-gray-100 hover:bg-gray-200 flex items-center justify-center transition-colors"
-                    onclick="this.nextElementSibling.stepDown()"
-                  ) -
-                  input(
-                    type="number"
-                    name="quantity"
-                    min="1"
-                    value="1"
-                    class="w-16 h-10 text-center border-y border-gray-200 focus:outline-none focus:border-primary"
-                  )
-                  button(
-                    type="button"
-                    class="w-10 h-10 rounded-r-lg bg-gray-100 hover:bg-gray-200 flex items-center justify-center transition-colors"
-                    onclick="this.previousElementSibling.stepUp()"
-                  ) +
+          div(class="w-full lg:w-1/2")
+            div(class="bg-white/90 backdrop-blur-md rounded-2xl p-8 shadow-lg animate-fade-in")
+              div(class="inline-block px-3 py-1 rounded-full text-sm font-medium bg-primary/10 text-primary mb-6")
+                = product.category || 'General'
+              h1(class="text-4xl font-bold text-gray-800 mb-4")= product.name
               
-              // Buy Now Button
-              button(
-                type="submit"
-                class="w-full bg-custom-red text-white text-lg font-medium py-4 rounded-xl hover:bg-custom-red-dark transform hover:-translate-y-1 transition-all duration-300 shadow-lg hover:shadow-xl"
-              )
-                span Buy Now
+              div(class="flex items-center gap-2 mb-6")
+                div(class="flex text-yellow-400")
+                  each star in Array(5).fill()
+                    svg(class="w-5 h-5 fill-current" viewBox="0 0 20 20")
+                      path(d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118l-2.8-2.034c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z")
+                span(class="text-gray-600") 4.5 (125 reviews)
+              
+              p(class="text-3xl font-bold text-primary mb-4") ₹#{product.price}
+              p(class="text-gray-600 text-lg leading-relaxed mb-8")= product.description
+              
+              form(action=`/payment/${product.id}` method="get" class="space-y-6")
+                div(class="flex items-center gap-4")
+                  label(class="text-gray-700 font-medium") Quantity:
+                  div(class="flex items-center")
+                    button(
+                      type="button"
+                      class="w-10 h-10 rounded-l-lg bg-gray-100 hover:bg-gray-200 flex items-center justify-center transition-colors"
+                      onclick="this.nextElementSibling.stepDown()"
+                    ) -
+                    input(
+                      type="number"
+                      name="quantity"
+                      min="1"
+                      value="1"
+                      class="w-16 h-10 text-center border-y border-gray-200 focus:outline-none focus:border-primary"
+                    )
+                    button(
+                      type="button"
+                      class="w-10 h-10 rounded-r-lg bg-gray-100 hover:bg-gray-200 flex items-center justify-center transition-colors"
+                      onclick="this.previousElementSibling.stepUp()"
+                    ) +
                 
-    // Founder Section
+                button(
+                  type="submit"
+                  class="w-full bg-custom-red text-white text-lg font-medium py-4 rounded-xl hover:bg-custom-red-dark transform hover:-translate-y-1 transition-all duration-300 shadow-lg hover:shadow-xl"
+                )
+                  span Buy Now
+
     section(class="py-16 bg-gray-50/50 relative overflow-hidden")
       div(class="absolute inset-0 pattern-grid opacity-5")
       div(class="container mx-auto px-4 relative z-10")
         div(class="max-w-4xl mx-auto bg-white rounded-2xl shadow-lg overflow-hidden")
           div(class="grid grid-cols-1 md:grid-cols-2 gap-0")
-            div(class="relative aspect-square md:aspect-auto group")
-              img(
-                class="w-full h-full object-cover transform group-hover:scale-110 transition-transform duration-700"
-                src=founders[0].image
-                alt=founders[0].name
-              )
-              div(class="absolute inset-0 bg-gradient-to-t from-black/60 via-black/30 to-transparent")
-              div(class="absolute bottom-6 left-6 right-6")
-                div(class="bg-white/90 backdrop-blur-md rounded-xl p-4 transform hover:scale-105 transition-all duration-300")
-                  h3(class="text-xl font-bold text-gray-800 mb-1")= founders[0].name
-                  p(class="text-primary") Founder & CEO
+            if founder
+              div(class="relative aspect-square md:aspect-auto group")
+                img(
+                  class="w-full h-full object-cover transform group-hover:scale-110 transition-transform duration-700"
+                  src=founder.image
+                  alt=founder.name
+                )
+                div(class="absolute inset-0 bg-gradient-to-t from-black/60 via-black/30 to-transparent")
+                div(class="absolute bottom-6 left-6 right-6")
+                  div(class="bg-white/90 backdrop-blur-md rounded-xl p-4 transform hover:scale-105 transition-all duration-300")
+                    h3(class="text-xl font-bold text-gray-800 mb-1")= founder.name
+                    p(class="text-primary")= founder.title || 'Founder & CEO'
             
             div(class="p-8 md:p-12")
               h2(class="text-3xl font-bold text-gray-800 mb-6") Meet the Founder
-              p(class="text-gray-600 text-lg leading-relaxed mb-8")= founders[0].story
-              
-              div(class="flex items-center gap-4")
-                each social in ['Twitter', 'LinkedIn', 'Instagram']
-                  a(
-                    href="#"
-                    class="w-10 h-10 rounded-full bg-gray-100 hover:bg-primary hover:text-white flex items-center justify-center transition-all duration-300"
-                  )
-                    svg(class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24")
-                      path(d="M12 0c-6.627 0-12 5.373-12 12s5.373 12 12 12 12-5.373 12-12-5.373-12-12-12zm-2 16h-2v-6h2v6zm-1-6.891c-.607 0-1.1-.496-1.1-1.109 0-.612.492-1.109 1.1-1.109s1.1.497 1.1 1.109c0 .613-.493 1.109-1.1 1.109zm8 6.891h-1.998v-2.861c0-1.881-2.002-1.722-2.002 0v2.861h-2v-6h2v1.093c.872-1.616 4-1.736 4 1.548v3.359z")
+              if founder
+                p(class="text-gray-600 text-lg leading-relaxed mb-8")= founder.story
+                
+                div(class="flex items-center gap-4")
+                  if founder.socialLinks
+                    a(
+                      href="https://www.instagram.com/kazematcha"
+                      class="w-10 h-10 rounded-full bg-gray-100 hover:bg-primary hover:text-white flex items-center justify-center transition-all duration-300"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                    )
+                      svg(class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24")
+                        path(d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z")
+                    a(
+                      href="https://www.linkedin.com/in/radhika-gupta-ashoka/"
+                      class="w-10 h-10 rounded-full bg-gray-100 hover:bg-primary hover:text-white flex items-center justify-center transition-all duration-300"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                    )
+                      svg(class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24")
+                        path(d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-1.998v-2.861c0-1.881-2.002-1.722-2.002 0v2.861h-2v-6h2v1.093c.872-1.616 4-1.736 4 1.548v3.359z")
+              else
+                p(class="text-gray-600 text-lg leading-relaxed mb-8") No founder information available at this time.
 
-    // Related Products Section
-    section(class="py-16 relative overflow-hidden")
-      div(class="container mx-auto px-4")
-        h2(class="text-3xl font-bold text-gray-800 mb-8") Related Products
-        
-        div(class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8")
-          each relatedProduct in relatedProducts
-            div(class="group bg-white rounded-xl shadow-lg overflow-hidden hover:shadow-xl transition-all duration-500 animate-fade-in")
-              // Product Image
-              div(class="relative aspect-square overflow-hidden")
+    .max-w-7xl.mx-auto.p-6.bg-white.rounded-lg.shadow-md.mt-6
+      section(class="py-12")
+        h2(class="text-2xl font-bold text-gray-800 mb-8") Related Products
+        div(class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8")
+          each related in relatedProducts
+            a(
+              href=`/product/${related.id}`
+              class="block bg-white rounded-lg shadow-md hover:shadow-xl transition-shadow duration-300"
+            )
+              div(class="p-6 flex flex-col items-center")
                 img(
-                  class="w-full h-full object-cover transform group-hover:scale-110 transition-transform duration-700"
-                  src=relatedProduct.images[0]
-                  alt=relatedProduct.name
+                  class="w-full h-40 object-cover rounded-lg mb-4"
+                  src=related.images[0]
+                  alt=related.name
                 )
-                // Overlay with Actions
-                div(class="absolute inset-0 bg-gradient-to-t from-black/60 via-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300")
-                div(class="absolute bottom-0 left-0 right-0 p-4 transform translate-y-full group-hover:translate-y-0 transition-transform duration-300")
-                  div(class="flex justify-between items-center gap-4")
-                    button(
-                      class="flex-1 bg-white/90 text-primary px-4 py-2 rounded-lg hover:bg-white transition-colors shadow-sm text-sm font-medium"
-                      onclick=`quickView(${relatedProduct.id})`
-                    ) Quick View
-                    button(
-                      class="flex-1 bg-primary text-white px-4 py-2 rounded-lg hover:bg-primary-dark transition-colors shadow-sm text-sm font-medium"
-                      onclick=`window.location.href='/product/${relatedProduct.id}'`
-                    ) View Details
-              
-              // Product Info
-              div(class="p-6")
-                h3(class="text-xl font-semibold text-gray-900 mb-2 group-hover:text-primary transition-colors")= relatedProduct.name
-                p(class="text-primary font-bold text-lg mb-2") ₹#{relatedProduct.price}
-                p(class="text-gray-600 text-sm line-clamp-2")= relatedProduct.description
+                h3(class="text-lg font-semibold text-gray-800 mb-2")= related.name
+                p(class="text-gray-600 mb-4") ₹#{related.price}
+                div(
+                  class="mt-auto inline-flex items-center text-custom-red hover:text-custom-yellow transition-colors"
+                )
+                  span View Details
+                  svg(
+                    class="w-4 h-4 ml-2"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  )
+                    path(
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      stroke-width="2"
+                      d="M17 8l4 4m0 0l-4 4m4-4H3"
+                    )
 
-    style.
-      @keyframes float {
-        0%, 100% { transform: translateY(0px); }
-        50% { transform: translateY(-20px); }
-      }
-      
-      @keyframes gradient {
-        0% { background-position: 0% 50%; }
-        50% { background-position: 100% 50%; }
-        100% { background-position: 0% 50%; }
-      }
-      
-      .animate-float {
-        animation: float 6s ease-in-out infinite;
-      }
-      
-      .animate-gradient {
-        background-size: 200% auto;
-        animation: gradient 8s linear infinite;
-      }
-      
-      .animate-fade-in {
-        animation: fadeIn 0.6s ease-out forwards;
-      }
-      
-      @keyframes fadeIn {
-        from { opacity: 0; transform: translateY(20px); }
-        to { opacity: 1; transform: translateY(0); }
-      }
-      
-      .pattern-grid {
-        background-image: radial-gradient(rgba(0, 0, 0, 0.1) 1px, transparent 1px);
-        background-size: 20px 20px;
-      }
+  style.
+    @keyframes float {
+      0%, 100% { transform: translateY(0px); }
+      50% { transform: translateY(-20px); }
+    }
+    
+    @keyframes gradient {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
+    
+    .animate-float {
+      animation: float 6s ease-in-out infinite;
+    }
+    
+    .animate-gradient {
+      background-size: 200% auto;
+      animation: gradient 8s linear infinite;
+    }
+    
+    .animate-fade-in {
+      animation: fadeIn 0.6s ease-out forwards;
+    }
+    
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    
+    .pattern-grid {
+      background-image: radial-gradient(rgba(0, 0, 0, 0.1) 1px, transparent 1px);
+      background-size: 20px 20px;
+    }
 
-    script.
-      function showImage(index) {
-        const mainImage = document.querySelector('.main-image');
-        const thumbnails = document.querySelectorAll('.thumbnail');
-        mainImage.src = thumbnails[index].src;
-      }
-      
-      function quickView(productId) {
-        // Implement quick view modal functionality
-        console.log('Quick view:', productId);
-      }
+  script.
+    function showImage(index) {
+      const mainImage = document.querySelector('.main-image');
+      const thumbnails = document.querySelectorAll('.thumbnail');
+      mainImage.src = thumbnails[index].src;
+    }
+    
+    function quickView(productId) {
+      // Implement quick view modal functionality
+      console.log('Quick view:', productId);
+    }

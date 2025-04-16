@@ -1,4 +1,5 @@
-const { products, founders, vendors } = require('../data');
+const { products } = require('../data');
+const founders = require('../data/founders');
 const fs = require('fs');
 
 let orders = require('../orders.json'); // Path relative to controllers directory
@@ -34,24 +35,75 @@ exports.getProducts = (req, res) => {
 };
 
 exports.getProduct = (req, res) => {
-	const productId = parseInt(req.params.id);
-	const product = products.find(p => p.id === productId);
-	console.log('Rendering product:', product); // Debug log
-	if (!product) {
-		return res.status(404).send('Product not found');
+	try {
+		const productId = req.params.id;
+
+		// First try to find by ID (both string and numeric)
+		let product = products.find(p => p.id === productId);
+
+		// If not found by ID, try to find by name (URL-friendly version)
+		if (!product) {
+			const nameFromUrl = productId.replace(/-/g, ' ');
+			product = products.find(p =>
+				p.name.toLowerCase() === nameFromUrl.toLowerCase() ||
+				p.name.toLowerCase().replace(/\s+/g, '-') === productId.toLowerCase()
+			);
+		}
+
+		if (!product) {
+			return res.status(404).render('error', {
+				message: 'Product not found',
+				error: { status: 404 }
+			});
+		}
+
+		// Get related products (excluding current product)
+		const relatedProducts = products.filter(p => p.id !== product.id).slice(0, 4);
+
+		// Get founder information
+		const founder = founders.find(f => f.id === product.founderId);
+
+		res.render('product', {
+			product,
+			relatedProducts,
+			founder: founder || null // Handle case where founder is not found
+		});
+	} catch (error) {
+		console.error('Error in getProduct:', error);
+		res.status(500).render('error', {
+			message: 'Error loading product',
+			error: { status: 500 }
+		});
 	}
-	const relatedProducts = products.filter(p => p.id !== productId).slice(0, 4);
-	res.render('product', { product, relatedProducts, founders }); // Pass founders
 };
 
 exports.getPayment = (req, res) => {
-	const productId = parseInt(req.params.id);
+	const productId = req.params.id;
 	const quantity = parseInt(req.query.quantity) || 1;
-	const product = products.find(p => p.id === productId);
+
+	console.log('Looking for product with ID:', productId); // Debug log
+
+	// First try to find by ID (both string and numeric)
+	let product = products.find(p => p.id === productId || p.id === `product${productId}` || p.id === parseInt(productId));
+
+	// If not found by ID, try to find by name (URL-friendly version)
 	if (!product) {
-		return res.status(404).send('Product not found');
+		const nameFromUrl = productId.replace(/-/g, ' ');
+		product = products.find(p =>
+			p.name.toLowerCase() === nameFromUrl.toLowerCase() ||
+			p.name.toLowerCase().replace(/\s+/g, '-') === productId.toLowerCase()
+		);
 	}
-	const orderId = Date.now(); // Unique order ID based on timestamp
+
+	if (!product) {
+		console.log('Product not found. Available products:', products.map(p => ({ id: p.id, name: p.name }))); // Debug log
+		return res.status(404).render('error', {
+			message: 'Product not found',
+			error: { status: 404 }
+		});
+	}
+
+	const orderId = Date.now().toString(); // Unique order ID based on timestamp
 	const order = {
 		id: orderId,
 		productId: product.id,
@@ -65,25 +117,69 @@ exports.getPayment = (req, res) => {
 		confirmed: false,
 		timestamp: new Date().toISOString()
 	};
+
 	orders.orders.push(order);
-	fs.writeFileSync('./orders.json', JSON.stringify(orders, null, 2)); // Write to root directory
-	console.log(`New order created with ID: ${orderId}`); // Add this log
-	res.render('payment', { product, quantity });
+	fs.writeFileSync('./orders.json', JSON.stringify(orders, null, 2));
+	console.log(`New order created with ID: ${orderId}`);
+
+	res.render('payment', {
+		product,
+		quantity,
+		orderId,
+		total: product.price * quantity
+	});
 };
 
 exports.postPaymentConfirm = (req, res) => {
-	const { productId, quantity, name: buyerName } = req.body;
-	const product = products.find(p => p.id === parseInt(productId));
-	if (!product) {
-		return res.status(404).send('Product not found');
+	const productId = req.params.id;
+	const { name, email, phone, address, city, pincode, quantity, orderId } = req.body;
+
+	// Find the order
+	const order = orders.orders.find(o => o.id === orderId);
+	if (!order) {
+		return res.status(404).render('error', {
+			message: 'Order not found',
+			error: { status: 404 }
+		});
 	}
-	const order = orders.orders.find(o => o.productId === parseInt(productId) && o.status === 'Pending Payment');
-	if (order) {
-		order.buyerName = buyerName;
-		order.status = 'Payment Initiated';
-		fs.writeFileSync('./orders.json', JSON.stringify(orders, null, 2));
+
+	// Update order with customer details
+	order.buyerName = name;
+	order.email = email;
+	order.phone = phone;
+	order.address = {
+		street: address,
+		city: city,
+		pincode: pincode
+	};
+	order.status = 'Payment Initiated';
+
+	// Save updated order
+	fs.writeFileSync('./orders.json', JSON.stringify(orders, null, 2));
+
+	// Redirect to order confirmation page
+	res.redirect(`/order-confirmation/${orderId}`);
+};
+
+exports.getOrderConfirmation = (req, res) => {
+	const orderId = req.params.orderId;
+	const order = orders.orders.find(o => o.id === orderId);
+
+	if (!order) {
+		return res.status(404).render('error', {
+			message: 'Order not found',
+			error: { status: 404 }
+		});
 	}
-	res.redirect(`/payment/${productId}?quantity=${quantity}`);
+
+	const product = products.find(p => p.id === order.productId);
+
+	res.render('order-confirmation', {
+		order,
+		product,
+		quantity: order.quantity,
+		total: order.total
+	});
 };
 
 exports.getVendorConfirm = (req, res) => {

@@ -6,6 +6,9 @@ const upload = require('./config/multer'); // Import upload from config/multer.j
 
 const indexRouter = require('./routes/index');
 const paymentRoutes = require('./routes/payment');
+const adminRoutes = require('./routes/admin');
+const dataRoutes = require('./routes/data');
+const apiRoutes = require('./routes/api');
 
 const app = express();
 
@@ -19,7 +22,10 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', indexRouter);
-app.use('/', paymentRoutes);
+app.use('/payment', paymentRoutes);
+app.use('/admin', adminRoutes);
+app.use('/api', apiRoutes);
+app.use('/data', dataRoutes);
 
 // Error handler
 app.use((req, res, next) => {

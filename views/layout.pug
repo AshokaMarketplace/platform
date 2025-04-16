@@ -10,59 +10,88 @@ html(lang='en')
       :root {
         --custom-red: #FF3366;
         --custom-yellow: #FFB800;
+        --primary: #2563eb;
       }
       .text-custom-red { color: var(--custom-red); }
       .text-custom-yellow { color: var(--custom-yellow); }
       .bg-custom-red { background-color: var(--custom-red); }
+      .text-primary { color: var(--primary); }
+      .bg-primary { background-color: var(--primary); }
+      .hover\:text-primary:hover { color: var(--primary); }
+      .hover\:bg-primary:hover { background-color: var(--primary); }
 
-  body
-    nav(class="bg-white shadow-sm")
-      div(class="container mx-auto px-6")
-        div(class="flex justify-between items-center py-4")
-          a(href="/" class="text-2xl font-bold text-custom-red") Ashoka Marketplace
-          div(class="flex items-center space-x-8")
-            a(href="/" class="text-gray-600 hover:text-gray-900") Home
-            a(href="/products" class="text-gray-600 hover:text-gray-900") All Products
-            a(href="/stories" class="text-gray-600 hover:text-gray-900") Stories
-            a(href="/about" class="text-gray-600 hover:text-gray-900") About Us
-            a(href="/seller/register" class="bg-custom-red text-white px-4 py-2 rounded-lg hover:bg-opacity-90") Become a Seller
+  body(class="min-h-screen bg-gray-50")
+    // Fixed Background Images
+    div(class="fixed inset-0 w-full h-full z-0 pointer-events-none")
+      div(class="absolute left-0 top-0 h-full w-1/4")
+        img(
+          src="/images/backgrounds/ashoka1.jpg"
+          class="w-full h-full object-cover opacity-10"
+          alt=""
+        )
+      div(class="absolute right-0 top-0 h-full w-1/4")
+        img(
+          src="/images/backgrounds/ashoka2.jpg"
+          class="w-full h-full object-cover opacity-10"
+          alt=""
+        )
+    
+    // Main Content Container
+    div(class="relative z-10")
+      // Navigation
+      nav(class="bg-white shadow-sm")
+        div(class="container mx-auto px-6")
+          div(class="flex justify-between items-center py-4" style="min-height: 64px;")
+            div(class="flex items-center space-x-6 flex-shrink-0" style="margin-left: 1cm;")
+              img(src="/images/logos/ashoka-logo.png" alt="Ashoka University Logo" class="h-14 w-auto")
+              img(src="/images/logos/eclub-logo.jpeg" alt="E-Club Logo" class="h-14 w-14 bg-white p-1 border border-gray-200 object-contain")
+              a(href="/" class="text-2xl font-bold text-custom-red ml-2 whitespace-nowrap") Ashoka Marketplace
+            div(class="flex-grow")
+            div(class="flex items-center space-x-12 text-lg" style="margin-right: 1cm;")
+              a(href="/" class="text-gray-600 hover:text-gray-900 font-semibold px-2 py-1") Home
+              a(href="/products" class="text-gray-600 hover:text-gray-900 font-semibold px-2 py-1") All Products
+              a(href="/stories" class="text-gray-600 hover:text-gray-900 font-semibold px-2 py-1") Stories
+              a(href="/about" class="text-gray-600 hover:text-gray-900 font-semibold px-2 py-1") About Us
+              a(href="/seller/register" class="bg-custom-red text-white px-6 py-3 rounded-lg text-lg font-semibold hover:bg-opacity-90 transition-all duration-200") Become a Seller
 
-    main
-      block content
-
-    footer(class="bg-gray-800 text-white mt-12")
-      div(class="container mx-auto px-6 py-8")
-        div(class="grid grid-cols-1 md:grid-cols-4 gap-8")
-          div
-            h3(class="text-lg font-bold mb-4") AshokanMarketplace
-            p(class="text-gray-400") Your Campus Marketplace
-          div
-            h3(class="text-lg font-bold mb-4") Quick Links
-            ul(class="space-y-2")
-              li
-                a(href="/" class="text-gray-400 hover:text-white") Home
-              li
-                a(href="/products" class="text-gray-400 hover:text-white") All Products
-              li
-                a(href="/stories" class="text-gray-400 hover:text-white") Stories
-              li
-                a(href="/about" class="text-gray-400 hover:text-white") About Us
-          div
-            h3(class="text-lg font-bold mb-4") Categories
-            ul(class="space-y-2")
-              li
-                a(href="/products?category=beauty" class="text-gray-400 hover:text-white") Beauty
-              li
-                a(href="/products?category=fashion" class="text-gray-400 hover:text-white") Fashion
-              li
-                a(href="/products?category=electronics" class="text-gray-400 hover:text-white") Electronics
-              li
-                a(href="/products?category=accessories" class="text-gray-400 hover:text-white") Accessories
-          div
-            h3(class="text-lg font-bold mb-4") Contact Us
-            ul(class="space-y-2 text-gray-400")
-              li Email: support@ashokanmarketplace.com
-              li Phone: +91 1234567890
-              li Address: Ashokan Campus, India
-        div(class="border-t border-gray-700 mt-8 pt-8 text-center text-gray-400")
-          p &copy; 2024 AshokanMarketplace. All rights reserved.
+      // Page Content
+      main
+        block content
+      
+      // Footer
+      footer(class="bg-gray-800 text-white mt-12")
+        div(class="container mx-auto px-6 py-8")
+          div(class="grid grid-cols-1 md:grid-cols-4 gap-8")
+            div
+              h3(class="text-lg font-bold mb-4") AshokanMarketplace
+              p(class="text-gray-400") Your Campus Marketplace
+            div
+              h3(class="text-lg font-bold mb-4") Quick Links
+              ul(class="space-y-2")
+                li
+                  a(href="/" class="text-gray-400 hover:text-white") Home
+                li
+                  a(href="/products" class="text-gray-400 hover:text-white") All Products
+                li
+                  a(href="/stories" class="text-gray-400 hover:text-white") Stories
+                li
+                  a(href="/about" class="text-gray-400 hover:text-white") About Us
+            div
+              h3(class="text-lg font-bold mb-4") Categories
+              ul(class="space-y-2")
+                li
+                  a(href="/products?category=beauty" class="text-gray-400 hover:text-white") Beauty
+                li
+                  a(href="/products?category=fashion" class="text-gray-400 hover:text-white") Fashion
+                li
+                  a(href="/products?category=electronics" class="text-gray-400 hover:text-white") Electronics
+                li
+                  a(href="/products?category=accessories" class="text-gray-400 hover:text-white") Accessories
+            div
+              h3(class="text-lg font-bold mb-4") Contact Us
+              ul(class="space-y-2 text-gray-400")
+                li Email: support@ashokanmarketplace.com
+                li Phone: +91 1234567890
+                li Address: Ashokan Campus, India
+          div(class="border-t border-gray-700 mt-8 pt-8 text-center text-gray-400")
+            p &copy; 2024 AshokanMarketplace. All rights reserved.

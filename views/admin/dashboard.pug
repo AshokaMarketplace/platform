@@ -1,0 +1,20 @@
+extends ../layout
+
+block content
+    .container.mx-auto.px-4.py-8
+        h1.text-3xl.font-bold.mb-8 Admin Dashboard
+
+        .grid.grid-cols-1.md:grid-cols-2.gap-6
+            // Products Section
+            .bg-white.p-6.rounded-lg.shadow-md
+                h2.text-xl.font-semibold.mb-4 Products
+                p.text-gray-600.mb-4 Manage your products and inventory
+                a(href="/admin/products/add").bg-blue-600.text-white.px-4.py-2.rounded-md.hover:bg-blue-700.transition-colors
+                    | Add New Product
+
+            // Founders Section
+            .bg-white.p-6.rounded-lg.shadow-md
+                h2.text-xl.font-semibold.mb-4 Founders
+                p.text-gray-600.mb-4 Manage founder profiles and stories
+                a(href="/admin/founders/add").bg-blue-600.text-white.px-4.py-2.rounded-md.hover:bg-blue-700.transition-colors
+                    | Add New Founder 

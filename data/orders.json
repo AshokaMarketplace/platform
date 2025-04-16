@@ -1,0 +1,68 @@
+{
+  "orders": [
+    {
+      "id": "ORD1744720582871",
+      "customerName": "Viom Kapur",
+      "email": "viom.kapur_ug25@ashoka.edu.in",
+      "phone": "9810482440",
+      "address": "Rh2",
+      "productDetails": {
+        "id": "1",
+        "name": "Shampoo",
+        "price": 199,
+        "quantity": 4
+      },
+      "amount": 796,
+      "status": "confirmed",
+      "createdAt": "2025-04-15T12:36:22.871Z"
+    },
+    {
+      "id": "ORD1744735147115",
+      "customerName": "Viom Kapur",
+      "email": "viom.kapur_ug25@ashoka.edu.in",
+      "phone": "9810482440",
+      "address": "Rh2",
+      "productDetails": {
+        "id": "1",
+        "name": "Shampoo",
+        "price": 199,
+        "quantity": 4
+      },
+      "amount": 796,
+      "status": "confirmed",
+      "createdAt": "2025-04-15T16:39:07.115Z"
+    },
+    {
+      "id": "ORD1744736843423",
+      "customerName": "Viom Kapur",
+      "email": "viom.kapur_ug25@ashoka.edu.in",
+      "phone": "9810482440",
+      "address": "Rh2",
+      "productDetails": {
+        "id": "1",
+        "name": "Shampoo",
+        "price": 199,
+        "quantity": 4
+      },
+      "amount": 796,
+      "status": "confirmed",
+      "createdAt": "2025-04-15T17:07:23.423Z"
+    },
+    {
+      "id": "ORD1744737350640",
+      "customerName": "Viom Kapur",
+      "email": "viom.kapur_ug25@ashoka.edu.in",
+      "phone": "9810482440",
+      "address": "Rh2",
+      "productDetails": {
+        "id": "1",
+        "name": "Shampoo",
+        "price": 199,
+        "quantity": 5
+      },
+      "amount": 995,
+      "status": "confirmed",
+      "createdAt": "2025-04-15T17:15:50.640Z"
+    }
+  ]
+}

@@ -1,11 +1,34 @@
 const express = require('express');
 const router = express.Router();
+const fs = require('fs').promises;
+const path = require('path');
 
-// Store orders in memory (in a real app, this would be in a database)
-const orders = new Map();
+// Helper function to read orders
+async function getOrders() {
+    try {
+        const data = await fs.readFile(path.join(__dirname, '../data/orders.json'), 'utf8');
+        return JSON.parse(data);
+    } catch (error) {
+        console.error('Error reading orders:', error);
+        return { orders: [] };
+    }
+}
+
+// Helper function to write orders
+async function saveOrders(orders) {
+    try {
+        await fs.writeFile(
+            path.join(__dirname, '../data/orders.json'),
+            JSON.stringify(orders, null, 2)
+        );
+    } catch (error) {
+        console.error('Error saving orders:', error);
+        throw error;
+    }
+}
 
 // Process payment and create order
-router.post('/process-payment', (req, res) => {
+router.post('/process-payment', async (req, res) => {
     const {
         fullName,
         email,
@@ -15,7 +38,8 @@ router.post('/process-payment', (req, res) => {
         productName,
         productPrice,
         quantity,
-        totalAmount
+        totalAmount,
+        vendorId
     } = req.body;
 
     const orderId = 'ORD' + Date.now();
@@ -35,167 +59,206 @@ router.post('/process-payment', (req, res) => {
             price: Number(productPrice),
             quantity: Number(quantity)
         },
+        vendorId,
         amount: Number(totalAmount),
         status: 'pending',
-        createdAt: new Date()
+        createdAt: new Date().toISOString()
     };
 
-    // Save order to memory
-    orders.set(orderId, orderData);
-    console.log('Order saved to memory:', orders.has(orderId));
-    console.log('Current order status:', orders.get(orderId).status);
+    try {
+        const orders = await getOrders();
+        orders.orders.push(orderData);
+        await saveOrders(orders);
 
-    console.log('\n=== Order Details ===');
-    console.log(`Order ID: ${orderId}`);
-    console.log(`Customer: ${fullName}`);
-    console.log(`Product: ${productName}`);
-    console.log(`Amount: ₹${totalAmount}`);
-    console.log('\nVendor Confirmation Links:');
-    console.log(`View Order: http://localhost:3001/vendor/view/${orderId}`);
-    console.log(`Quick Confirm: http://localhost:3001/vendor/quick-confirm/${orderId}`);
-    console.log('============================\n');
+        console.log('\n=== Order Details ===');
+        console.log(`Order ID: ${orderId}`);
+        console.log(`Customer: ${fullName}`);
+        console.log(`Product: ${productName}`);
+        console.log(`Amount: ₹${totalAmount}`);
+        console.log(`Shipping Address: ${streetAddress}`);
+        console.log('\nVendor Confirmation Links:');
+        console.log(`View Order: http://localhost:3001/payment/vendor/view/${orderId}`);
+        console.log(`Quick Confirm: http://localhost:3001/payment/vendor/quick-confirm/${orderId}`);
+        console.log('============================\n');
 
-    res.redirect(`/order-pending/${orderId}`);
+        res.redirect(`/payment/order-pending/${orderId}`);
+    } catch (error) {
+        console.error('Error saving order:', error);
+        res.status(500).render('error', {
+            message: 'Error processing order',
+            error: { status: 500 }
+        });
+    }
 });
 
 // Order pending page
-router.get('/order-pending/:orderId', (req, res) => {
+router.get('/order-pending/:orderId', async (req, res) => {
     const orderId = req.params.orderId;
     console.log('\n=== Accessing Order Pending Page ===');
     console.log('Looking for order:', orderId);
 
-    const order = orders.get(orderId);
-    console.log('Order found:', !!order);
-    if (order) {
-        console.log('Order status:', order.status);
-    }
+    try {
+        const orders = await getOrders();
+        const order = orders.orders.find(o => o.id === orderId);
 
-    if (!order) {
-        console.log('Order not found in memory');
-        return res.status(404).render('error', {
-            message: 'Order not found',
-            error: { status: 404 }
+        if (!order) {
+            console.log('Order not found');
+            return res.status(404).render('error', {
+                message: 'Order not found',
+                error: { status: 404 }
+            });
+        }
+
+        // Get the founder data to access the UPI QR code
+        const founders = require('../data/founders.json');
+        const founder = founders.find(f => f.id === order.vendorId);
+        const upiQrCodePath = founder ? `/images/founders/upi/${founder.upiQrCode}` : '/images/founders/upi/radhika-suhana-syona-upi.png';
+
+        res.render('order-pending', {
+            orderId: order.id,
+            amount: order.amount,
+            productName: order.productDetails.name,
+            upiQrCodePath: upiQrCodePath
+        });
+    } catch (error) {
+        console.error('Error fetching order:', error);
+        res.status(500).render('error', {
+            message: 'Error loading order',
+            error: { status: 500 }
         });
     }
-
-    res.render('order-pending', {
-        orderId: order.id,
-        amount: order.amount,
-        productName: order.productDetails.name
-    });
 });
 
 // API endpoint to check order status
-router.get('/api/check-order-status/:orderId', (req, res) => {
+router.get('/api/check-order-status/:orderId', async (req, res) => {
     const orderId = req.params.orderId;
     console.log('\n=== Checking Order Status ===');
     console.log('Looking for order:', orderId);
 
-    const order = orders.get(orderId);
-    console.log('Order found:', !!order);
-    if (order) {
-        console.log('Current status:', order.status);
-    }
+    try {
+        const orders = await getOrders();
+        const order = orders.orders.find(o => o.id === orderId);
 
-    if (!order) {
-        return res.status(404).json({ error: 'Order not found' });
-    }
+        if (!order) {
+            return res.status(404).json({ error: 'Order not found' });
+        }
 
-    res.json({
-        status: order.status,
-        orderId: order.id,
-        productName: order.productDetails.name,
-        amount: order.amount
-    });
+        res.json({
+            status: order.status,
+            orderId: order.id,
+            productName: order.productDetails.name,
+            amount: order.amount
+        });
+    } catch (error) {
+        console.error('Error checking order status:', error);
+        res.status(500).json({ error: 'Error checking order status' });
+    }
 });
 
 // Vendor view order page
-router.get('/vendor/view/:orderId', (req, res) => {
+router.get('/vendor/view/:orderId', async (req, res) => {
     const orderId = req.params.orderId;
     console.log('\n=== Accessing Vendor View Page ===');
     console.log('Looking for order:', orderId);
 
-    const order = orders.get(orderId);
-    console.log('Order found:', !!order);
-    if (order) {
-        console.log('Current status:', order.status);
-    }
+    try {
+        const orders = await getOrders();
+        const order = orders.orders.find(o => o.id === orderId);
 
-    if (!order) {
-        return res.render('error', {
-            message: 'Order not found',
-            error: { status: 404 }
+        if (!order) {
+            return res.render('error', {
+                message: 'Order not found',
+                error: { status: 404 }
+            });
+        }
+
+        res.render('vendor-view', {
+            orderId: order.id,
+            customerName: order.customerName,
+            email: order.email,
+            phone: order.phone,
+            address: order.address,
+            productName: order.productDetails.name,
+            quantity: order.productDetails.quantity,
+            amount: order.amount,
+            status: order.status
+        });
+    } catch (error) {
+        console.error('Error fetching order:', error);
+        res.status(500).render('error', {
+            message: 'Error loading order',
+            error: { status: 500 }
         });
     }
-
-    res.render('vendor-view', {
-        orderId: order.id,
-        customerName: order.customerName,
-        productName: order.productDetails.name,
-        amount: order.amount,
-        status: order.status
-    });
 });
 
-// Quick confirm order (simple GET request)
-router.get('/vendor/quick-confirm/:orderId', (req, res) => {
+// Quick confirm order
+router.get('/vendor/quick-confirm/:orderId', async (req, res) => {
     const orderId = req.params.orderId;
     console.log('\n=== Processing Quick Confirmation ===');
     console.log('Looking for order:', orderId);
 
-    const order = orders.get(orderId);
-    console.log('Order found:', !!order);
-    if (order) {
-        console.log('Previous status:', order.status);
-    }
+    try {
+        const orders = await getOrders();
+        const orderIndex = orders.orders.findIndex(o => o.id === orderId);
 
-    if (!order) {
-        return res.render('error', {
-            message: 'Order not found',
-            error: { status: 404 }
+        if (orderIndex === -1) {
+            return res.render('error', {
+                message: 'Order not found',
+                error: { status: 404 }
+            });
+        }
+
+        // Update order status
+        orders.orders[orderIndex].status = 'confirmed';
+        await saveOrders(orders);
+
+        console.log('Order confirmation successful');
+        res.render('vendor-success', {
+            orderId: orders.orders[orderIndex].id,
+            customerName: orders.orders[orderIndex].customerName,
+            productName: orders.orders[orderIndex].productDetails.name,
+            amount: orders.orders[orderIndex].amount
+        });
+    } catch (error) {
+        console.error('Error confirming order:', error);
+        res.status(500).render('error', {
+            message: 'Error confirming order',
+            error: { status: 500 }
         });
     }
-
-    // Update order status
-    order.status = 'confirmed';
-    orders.set(orderId, order);
-    console.log('Updated status to:', order.status);
-    console.log('Order confirmation successful');
-
-    // Render a simple success page
-    res.render('quick-confirm-success', {
-        orderId: order.id,
-        customerName: order.customerName,
-        productName: order.productDetails.name,
-        amount: order.amount
-    });
 });
 
 // Order confirmed page
-router.get('/order-confirmed/:orderId', (req, res) => {
+router.get('/order-confirmed/:orderId', async (req, res) => {
     const orderId = req.params.orderId;
     console.log('\n=== Accessing Order Confirmed Page ===');
     console.log('Looking for order:', orderId);
 
-    const order = orders.get(orderId);
-    console.log('Order found:', !!order);
-    if (order) {
-        console.log('Current status:', order.status);
-    }
+    try {
+        const orders = await getOrders();
+        const order = orders.orders.find(o => o.id === orderId);
 
-    if (!order) {
-        return res.status(404).render('error', {
-            message: 'Order not found',
-            error: { status: 404 }
+        if (!order) {
+            return res.status(404).render('error', {
+                message: 'Order not found',
+                error: { status: 404 }
+            });
+        }
+
+        res.render('order-confirmed', {
+            orderId: order.id,
+            customerName: order.customerName,
+            productName: order.productDetails.name,
+            amount: order.amount
+        });
+    } catch (error) {
+        console.error('Error fetching order:', error);
+        res.status(500).render('error', {
+            message: 'Error loading order',
+            error: { status: 500 }
         });
     }
-
-    res.render('order-confirmed', {
-        orderId: order.id,
-        customerName: order.customerName,
-        productName: order.productDetails.name,
-        amount: order.amount
-    });
 });
 
 module.exports = router; 

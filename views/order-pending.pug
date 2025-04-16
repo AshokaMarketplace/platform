@@ -35,6 +35,17 @@ block content
             div(class="flex justify-between items-center")
               span(class="text-gray-600") Payment Method
               span(class="font-medium text-gray-800") UPI
+
+          // UPI QR Code Section
+          div(class="bg-white rounded-xl p-6 mb-8 shadow-inner")
+            h2(class="text-xl font-semibold text-gray-800 mb-4") Scan QR Code to Pay
+            div(class="max-w-xs mx-auto")
+              img(
+                src=upiQrCodePath
+                alt="UPI QR Code"
+                class="w-full rounded-lg shadow-lg mb-4"
+              )
+            p(class="text-sm text-gray-600 text-center") Please scan this QR code with any UPI app to make the payment
           
           // Status Timeline
           div(class="flex items-center justify-between max-w-xs mx-auto mb-8")
@@ -126,7 +137,7 @@ block content
           
           // Redirect after showing confirmation
           setTimeout(() => {
-            window.location.href = '/order-confirmed/' + orderId;
+            window.location.href = '/payment/order-confirmed/' + orderId;
           }, 2000);
         }
       }
@@ -134,7 +145,7 @@ block content
       function checkOrderStatus() {
         if (isConfirmed) return; // Don't check if already confirmed
 
-        fetch('/api/check-order-status/' + orderId)
+        fetch('/payment/api/check-order-status/' + orderId)
           .then(response => {
             if (!response.ok) {
               throw new Error('Network response was not ok');

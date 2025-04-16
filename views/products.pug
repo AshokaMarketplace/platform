@@ -1,105 +1,106 @@
 extends layout.pug
 
 block content
-  // Hero Section with Animated Background
-  section(class="relative py-24 overflow-hidden")
-    // Animated background elements
-    div(class="absolute inset-0 bg-gradient-to-br from-primary/5 via-accent-purple/5 to-accent-pink/5")
-    div(class="absolute inset-0 bg-[url('/images/wavy-pattern.svg')] opacity-10 animate-float")
-    div(class="absolute top-0 right-0 w-1/2 h-1/2 bg-gradient-to-br from-primary/10 to-accent-pink/10 blur-3xl animate-pulse")
-    div(class="absolute bottom-0 left-0 w-1/2 h-1/2 bg-gradient-to-tr from-accent-purple/10 to-primary/10 blur-3xl animate-pulse delay-1000")
-    
-    div(class="container mx-auto px-4 relative z-10")
-      div(class="max-w-4xl mx-auto text-center")
-        h1(class="text-5xl md:text-6xl font-bold mb-6 bg-gradient-to-r from-primary via-accent-purple to-accent-pink bg-clip-text text-transparent animate-gradient") 
-          | Discover Our Products
-        p(class="text-xl text-gray-600 max-w-2xl mx-auto animate-fade-in") 
-          | Explore our curated collection of high-quality products from local artisans and businesses.
+  .max-w-7xl.mx-auto.p-6.bg-white.rounded-lg.shadow-md.mt-6
+    // Hero Section with Animated Background
+    section(class="relative py-24 overflow-hidden")
+      // Animated background elements
+      div(class="absolute inset-0 bg-gradient-to-br from-primary/5 via-accent-purple/5 to-accent-pink/5")
+      div(class="absolute inset-0 bg-[url('/images/wavy-pattern.svg')] opacity-10 animate-float")
+      div(class="absolute top-0 right-0 w-1/2 h-1/2 bg-gradient-to-br from-primary/10 to-accent-pink/10 blur-3xl animate-pulse")
+      div(class="absolute bottom-0 left-0 w-1/2 h-1/2 bg-gradient-to-tr from-accent-purple/10 to-primary/10 blur-3xl animate-pulse delay-1000")
+      
+      div(class="container mx-auto px-4 relative z-10")
+        div(class="max-w-4xl mx-auto text-center")
+          h1(class="text-5xl md:text-6xl font-bold mb-6 text-gray-800") 
+            | Discover Our Products
+          p(class="text-xl text-gray-600 max-w-2xl mx-auto animate-fade-in") 
+            | Explore our curated collection of high-quality products from local artisans and businesses.
 
-  // Enhanced Filters Section
-  section(class="sticky top-16 bg-white/95 backdrop-blur-md shadow-sm py-4 z-40 border-b border-gray-100")
-    div(class="container mx-auto px-4")
-      div(class="flex flex-col md:flex-row md:items-center md:justify-between gap-4")
-        // Category Pills
-        div(class="flex flex-wrap items-center gap-2")
-          button(class="category-pill active") All
-          each category in categories
-            button(class="category-pill")= category
-        
-        // Enhanced Controls
-        div(class="flex items-center gap-4")
-          // Sort Dropdown with Custom Styling
-          div(class="relative group")
-            select(class="appearance-none bg-white pl-4 pr-10 py-2 border border-gray-200 rounded-lg focus:border-primary focus:ring-2 focus:ring-primary/20 cursor-pointer")
-              option(value="") Featured
-              option(value="price-low") Price: Low to High
-              option(value="price-high") Price: High to Low
-              option(value="newest") Newest First
-            div(class="absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none text-primary transition-transform group-hover:translate-y-[-60%] duration-300")
-              svg(class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24")
-                path(stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7")
+    // Enhanced Filters Section
+    section(class="sticky top-16 bg-white/95 backdrop-blur-md shadow-sm py-4 z-40 border-b border-gray-100")
+      div(class="container mx-auto px-4")
+        div(class="flex flex-col md:flex-row md:items-center md:justify-between gap-4")
+          // Category Pills
+          div(class="flex flex-wrap items-center gap-2")
+            button(class="category-pill active") All
+            each category in categories
+              button(class="category-pill")= category
           
-          // Enhanced Filter Button
-          button(class="filter-button flex items-center gap-2 bg-gray-50 hover:bg-gray-100 text-gray-700 px-4 py-2 rounded-lg transition-all duration-300 hover:shadow-md")
-            span Filters
-            svg(class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24")
-              path(stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6V4m0 2a2 2 0 100 4m0-4a2 2 0 110 4m-6 8a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4m6 6v10m6-2a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4")
+          // Enhanced Controls
+          div(class="flex items-center gap-4")
+            // Sort Dropdown with Custom Styling
+            div(class="relative group")
+              select(class="appearance-none bg-white pl-4 pr-10 py-2 border border-gray-200 rounded-lg focus:border-primary focus:ring-2 focus:ring-primary/20 cursor-pointer")
+                option(value="") Featured
+                option(value="price-low") Price: Low to High
+                option(value="price-high") Price: High to Low
+                option(value="newest") Newest First
+              div(class="absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none text-primary transition-transform group-hover:translate-y-[-60%] duration-300")
+                svg(class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24")
+                  path(stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7")
+            
+            // Enhanced Filter Button
+            button(class="filter-button flex items-center gap-2 bg-gray-50 hover:bg-gray-100 text-gray-700 px-4 py-2 rounded-lg transition-all duration-300 hover:shadow-md")
+              span Filters
+              svg(class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24")
+                path(stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6V4m0 2a2 2 0 100 4m0-4a2 2 0 110 4m-6 8a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4m6 6v10m6-2a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4")
 
-  // Enhanced Products Grid
-  section(class="py-12 bg-gray-50/50")
-    div(class="container mx-auto px-4")
-      div(class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8")
-        each product in products
-          a(
-            href=`/product/${product.id}`
-            class="block bg-white rounded-lg shadow-md hover:shadow-xl transition-shadow duration-300"
-          )
-            div(class="p-6 flex flex-col items-center")
-              img(
-                class="w-full h-56 object-cover rounded-lg mb-4"
-                src=product.images[0]
-                alt=product.name
-              )
-              h3(class="text-xl font-semibold text-gray-800 mb-2")= product.name
-              p(class="text-gray-600 mb-4") ₹#{product.price}
-              div(
-                class="mt-auto inline-flex items-center text-custom-red hover:text-custom-yellow transition-colors"
-              )
-                span View Details
-                svg(
-                  class="w-4 h-4 ml-2"
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
+    // Enhanced Products Grid
+    section(class="py-12 bg-gray-50/50")
+      div(class="container mx-auto px-4")
+        div(class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8")
+          each product in products
+            a(
+              href=`/product/${product.id}`
+              class="block bg-white rounded-lg shadow-md hover:shadow-xl transition-shadow duration-300"
+            )
+              div(class="p-6 flex flex-col items-center")
+                img(
+                  class="w-full h-56 object-cover rounded-lg mb-4"
+                  src=product.images[0]
+                  alt=product.name
                 )
-                  path(
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                    stroke-width="2"
-                    d="M17 8l4 4m0 0l-4 4m4-4H3"
+                h3(class="text-xl font-semibold text-gray-800 mb-2")= product.name
+                p(class="text-gray-600 mb-4") ₹#{product.price}
+                div(
+                  class="mt-auto inline-flex items-center text-custom-red hover:text-custom-yellow transition-colors"
+                )
+                  span View Details
+                  svg(
+                    class="w-4 h-4 ml-2"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
                   )
+                    path(
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      stroke-width="2"
+                      d="M17 8l4 4m0 0l-4 4m4-4H3"
+                    )
 
-  // Newsletter Section
-  section(class="py-16 bg-gradient-to-r from-primary/10 via-accent-purple/10 to-accent-pink/10 relative overflow-hidden")
-    // Animated background elements
-    div(class="absolute inset-0 bg-[url('/images/pattern.svg')] opacity-5 animate-float")
-    div(class="absolute top-0 right-0 w-1/3 h-1/3 bg-gradient-to-br from-primary/20 to-accent-pink/20 blur-3xl animate-pulse")
-    div(class="absolute bottom-0 left-0 w-1/3 h-1/3 bg-gradient-to-tr from-accent-purple/20 to-primary/20 blur-3xl animate-pulse delay-1000")
-    
-    div(class="container mx-auto px-4 relative z-10")
-      div(class="max-w-2xl mx-auto text-center")
-        h2(class="text-3xl font-bold text-gray-900 mb-6") Stay Updated
-        p(class="text-gray-600 mb-8") Subscribe to our newsletter for the latest products and exclusive offers.
-        form(class="flex gap-4 max-w-md mx-auto")
-          input(
-            type="email" 
-            placeholder="Enter your email" 
-            class="flex-1 px-4 py-3 rounded-lg border border-gray-200 focus:border-primary focus:ring-2 focus:ring-primary/20 shadow-sm"
-          )
-          button(
-            type="submit" 
-            class="bg-primary text-white px-6 py-3 rounded-lg hover:bg-primary-dark transition-colors duration-300 shadow-sm hover:shadow-lg transform hover:-translate-y-0.5"
-          ) Subscribe
+    // Newsletter Section
+    section(class="py-16 bg-gradient-to-r from-primary/10 via-accent-purple/10 to-accent-pink/10 relative overflow-hidden")
+      // Animated background elements
+      div(class="absolute inset-0 bg-[url('/images/pattern.svg')] opacity-5 animate-float")
+      div(class="absolute top-0 right-0 w-1/3 h-1/3 bg-gradient-to-br from-primary/20 to-accent-pink/20 blur-3xl animate-pulse")
+      div(class="absolute bottom-0 left-0 w-1/3 h-1/3 bg-gradient-to-tr from-accent-purple/20 to-primary/20 blur-3xl animate-pulse delay-1000")
+      
+      div(class="container mx-auto px-4 relative z-10")
+        div(class="max-w-2xl mx-auto text-center")
+          h2(class="text-3xl font-bold text-gray-900 mb-6") Stay Updated
+          p(class="text-gray-600 mb-8") Subscribe to our newsletter for the latest products and exclusive offers.
+          form(class="flex gap-4 max-w-md mx-auto")
+            input(
+              type="email" 
+              placeholder="Enter your email" 
+              class="flex-1 px-4 py-3 rounded-lg border border-gray-200 focus:border-primary focus:ring-2 focus:ring-primary/20 shadow-sm"
+            )
+            button(
+              type="submit" 
+              class="bg-primary text-white px-6 py-3 rounded-lg hover:bg-primary-dark transition-colors duration-300 shadow-sm hover:shadow-lg transform hover:-translate-y-0.5"
+            ) Subscribe
 
   style.
     @keyframes float {

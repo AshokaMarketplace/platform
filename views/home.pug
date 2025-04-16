@@ -1,33 +1,43 @@
 extends layout.pug
 
 block content
-  .container.mx-auto.p-8.bg-white.rounded-lg.shadow-md.mt-6
+  .max-w-7xl.mx-auto.p-6.bg-white.rounded-lg.shadow-md.mt-6
     .text-center.py-16
-      h1(class=['text-5xl', 'font-bold', 'text-custom-red', 'mb-2']) Your Campus Marketplace -
-      span(class=['text-5xl', 'font-bold', 'text-custom-yellow']) Buy, Sell, Thrive
-      p(class=['text-gray-600', 'text-xl', 'mt-4']) 10+ Brands Available
-    
-    .flex.justify-center.space-x-6.mb-12
-      button(
-        class=['bg-red-500', 'text-white', 'px-6', 'py-3', 'rounded-lg', 'hover:bg-red-600', 'focus:outline-none', 'focus:ring-2', 'focus:ring-red-600'],
-        hx-get='/products?category=beauty',
-        hx-target='#main-content'
-      ) Beauty
-      button(
-        class=['bg-blue-500', 'text-white', 'px-6', 'py-3', 'rounded-lg', 'hover:bg-blue-600', 'focus:outline-none', 'focus:ring-2', 'focus:ring-blue-600'],
-        hx-get='/products?category=fashion',
-        hx-target='#main-content'
-      ) Fashion
-      button(
-        class=['bg-green-500', 'text-white', 'px-6', 'py-3', 'rounded-lg', 'hover:bg-green-600', 'focus:outline-none', 'focus:ring-2', 'focus:ring-green-600'],
-        hx-get='/products?category=electronics',
-        hx-target='#main-content'
-      ) Electronics
-      button(
-        class=['bg-purple-500', 'text-white', 'px-6', 'py-3', 'rounded-lg', 'hover:bg-purple-600', 'focus:outline-none', 'focus:ring-2', 'focus:ring-purple-600'],
-        hx-get='/products?category=accessories',
-        hx-target='#main-content'
-      ) Accessories
+      h1.text-6xl.font-extrabold.mb-4.leading-tight.text-custom-red Your Campus Marketplace
+      p.text-2xl.font-semibold.text-primary.mb-4 Buy, Sell, Thrive
+      div(class="flex justify-center items-center gap-3 mb-6")
+        span(class="inline-block bg-primary/10 text-primary text-sm font-semibold px-4 py-1 rounded-full shadow-sm") 10+ Brands Available
+      p.text-lg.text-gray-600.mb-10 Connect, Buy, and Sell within your trusted campus community.
+      // Category Buttons
+      div(class="flex flex-wrap justify-center gap-4 mb-12")
+        button(
+          class="flex items-center gap-2 px-6 py-3 rounded-full bg-custom-red text-white font-semibold shadow-md hover:bg-custom-yellow hover:text-custom-red transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-custom-red/30"
+          hx-get='/products?category=beauty'
+          hx-target='#main-content'
+        )
+          i(class="fas fa-spa")
+          | Beauty
+        button(
+          class="flex items-center gap-2 px-6 py-3 rounded-full bg-primary text-white font-semibold shadow-md hover:bg-custom-yellow hover:text-primary transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-primary/30"
+          hx-get='/products?category=fashion'
+          hx-target='#main-content'
+        )
+          i(class="fas fa-tshirt")
+          | Fashion
+        button(
+          class="flex items-center gap-2 px-6 py-3 rounded-full bg-custom-yellow text-gray-900 font-semibold shadow-md hover:bg-primary hover:text-white transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-custom-yellow/30"
+          hx-get='/products?category=electronics'
+          hx-target='#main-content'
+        )
+          i(class="fas fa-bolt")
+          | Electronics
+        button(
+          class="flex items-center gap-2 px-6 py-3 rounded-full bg-purple-600 text-white font-semibold shadow-md hover:bg-custom-yellow hover:text-purple-600 transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-purple-600/30"
+          hx-get='/products?category=accessories'
+          hx-target='#main-content'
+        )
+          i(class="fas fa-gem")
+          | Accessories
     
     .text-center.mb-12
       h2(class=['text-2xl', 'font-semibold', 'text-gray-800', 'underline']) Popular Products
@@ -38,7 +48,8 @@ block content
           img(class=['w-full', 'h-56', 'object-cover', 'rounded-t-lg', 'mb-4'], src=product.images[0], alt=product.name)
           h3(class=['text-xl', 'font-semibold', 'text-gray-800', 'mb-2'])= product.name
           p(class=['text-gray-600', 'mb-4']) ₹#{product.price}
-          a(class=['text-blue-600', 'hover:underline', 'text-sm'], href=`/product/${product.id}`) View More
+          a(class=['text-blue-600', 'hover:underline', 'text-sm'], href=`/product/${product.name.toLowerCase().replace(/\s+/g, '-')}`) View More
     
     .mt-12
-      img(class=['w-full', 'rounded-lg', 'shadow-md', 'h-64', 'object-cover'], src='/images/promo-hands.jpg', alt='Promotional offer')
+      div(class="flex justify-center")
+        img(class="max-w-full h-auto rounded-lg shadow-md", src="/images/promo-hands.jpg", alt="Promotional offer")

@@ -12,6 +12,16 @@ router.get('/', controllers.getHome);
 router.get('/products', controllers.getProducts);
 router.get('/product/:id', controllers.getProduct);
 router.get('/payment/:id', controllers.getPayment);
+
+// Redirect old order URLs to new payment route URLs
+router.get('/order-pending/:orderId', (req, res) => {
+    res.redirect(`/payment/order-pending/${req.params.orderId}`);
+});
+
+router.get('/order-confirmed/:orderId', (req, res) => {
+    res.redirect(`/payment/order-confirmed/${req.params.orderId}`);
+});
+
 router.post('/payment/confirm', controllers.postPaymentConfirm);
 router.get('/vendor/confirm/:orderId', controllers.getVendorConfirm);
 router.post('/order-confirmation', controllers.postOrderConfirmation);
@@ -27,7 +37,8 @@ router.get('/test', (req, res) => {
     res.send('<p class="text-green-600">HTMX works!</p>');
 });
 router.get('/founder/:id', (req, res) => {
-    const founder = founders[req.params.id];
+    const foundersData = require('../data/founders.json');
+    const founder = foundersData.founders.find(f => f.id === req.params.id);
     if (!founder) {
         return res.status(404).render('error', {
             message: 'Founder not found',

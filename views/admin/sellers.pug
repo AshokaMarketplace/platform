@@ -1,0 +1,128 @@
+extends ../layout
+
+block content
+  div(class="container mx-auto px-4 py-8")
+    h1(class="text-3xl font-bold mb-8") Seller Applications
+
+    // Filter and Search
+    div(class="mb-8 flex gap-4")
+      select(id="status-filter" class="px-4 py-2 border rounded-md")
+        option(value="all") All Applications
+        option(value="pending") Pending
+        option(value="approved") Approved
+        option(value="rejected") Rejected
+      
+      input(type="text" id="search" placeholder="Search by name or email" class="flex-1 px-4 py-2 border rounded-md")
+
+    // Applications List
+    if vendors && vendors.length > 0
+      div(class="grid gap-6")
+        each vendor in vendors
+          div(class="bg-white rounded-lg shadow-md p-6" data-status=vendor.status)
+            div(class="grid grid-cols-1 md:grid-cols-2 gap-6")
+              // Basic Information
+              div
+                h2(class="text-xl font-semibold mb-2")= vendor.name
+                p(class="text-gray-600 mb-1")= vendor.email
+                p(class="text-gray-600 mb-1") UPI ID: #{vendor.upiId}
+                p(class="text-gray-600") Location: #{vendor.location || 'Not specified'}
+                
+                // Status Badge
+                div(class="mt-4")
+                  span(class=`px-3 py-1 rounded-full text-sm font-medium ${
+                    vendor.status === 'approved' ? 'bg-green-100 text-green-800' :
+                    vendor.status === 'rejected' ? 'bg-red-100 text-red-800' :
+                    'bg-yellow-100 text-yellow-800'
+                  }`)= vendor.status || 'pending'
+
+              // Images and Actions
+              div
+                // UPI QR Code
+                if vendor.qrCodePath
+                  div(class="mb-4")
+                    p(class="text-sm font-medium text-gray-700 mb-2") UPI QR Code:
+                    img(src=vendor.qrCodePath alt="UPI QR Code" class="w-32 h-32 object-contain border rounded")
+
+                // Product Images
+                if vendor.productImagePaths && vendor.productImagePaths.length > 0
+                  div(class="mb-4")
+                    p(class="text-sm font-medium text-gray-700 mb-2") Product Images:
+                    div(class="flex gap-2 overflow-x-auto")
+                      each image in vendor.productImagePaths
+                        img(src=image alt="Product Image" class="w-24 h-24 object-cover rounded")
+
+                // Action Buttons
+                if !vendor.status || vendor.status === 'pending'
+                  div(class="flex gap-4 mt-4")
+                    button(
+                      onclick=`approveSeller(${vendor.id})`
+                      class="bg-green-600 text-white px-4 py-2 rounded-md hover:bg-green-700 transition-colors"
+                    ) Approve
+                    button(
+                      onclick=`rejectSeller(${vendor.id})`
+                      class="bg-red-600 text-white px-4 py-2 rounded-md hover:bg-red-700 transition-colors"
+                    ) Reject
+    else
+      div(class="text-center py-12")
+        p(class="text-gray-600 text-lg") No seller applications found.
+
+  script.
+    // Filter and Search functionality
+    const statusFilter = document.getElementById('status-filter');
+    const searchInput = document.getElementById('search');
+    const applications = document.querySelectorAll('[data-status]');
+
+    function filterApplications() {
+      const status = statusFilter.value;
+      const searchTerm = searchInput.value.toLowerCase();
+
+      applications.forEach(app => {
+        const appStatus = app.dataset.status;
+        const appText = app.textContent.toLowerCase();
+        
+        const statusMatch = status === 'all' || appStatus === status;
+        const searchMatch = appText.includes(searchTerm);
+        
+        app.style.display = statusMatch && searchMatch ? 'block' : 'none';
+      });
+    }
+
+    statusFilter.addEventListener('change', filterApplications);
+    searchInput.addEventListener('input', filterApplications);
+
+    // Approve/Reject functionality
+    async function approveSeller(id) {
+      try {
+        const response = await fetch(`/admin/sellers/${id}/approve`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' }
+        });
+        
+        if (response.ok) {
+          location.reload();
+        } else {
+          alert('Error approving seller');
+        }
+      } catch (error) {
+        console.error('Error:', error);
+        alert('Error approving seller');
+      }
+    }
+
+    async function rejectSeller(id) {
+      try {
+        const response = await fetch(`/admin/sellers/${id}/reject`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' }
+        });
+        
+        if (response.ok) {
+          location.reload();
+        } else {
+          alert('Error rejecting seller');
+        }
+      } catch (error) {
+        console.error('Error:', error);
+        alert('Error rejecting seller');
+      }
+    } 

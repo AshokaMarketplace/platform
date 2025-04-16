@@ -1,65 +1,67 @@
 extends layout.pug
 
 block content
-  // Hero Section with Animated Elements
-  section(class="relative min-h-[40vh] flex items-center justify-center overflow-hidden bg-gradient-to-br from-primary/5 to-accent-pink/10")
-    // Animated background elements
-    div(class="absolute inset-0 pattern-grid opacity-5")
-    div(class="absolute top-0 right-0 w-1/2 h-1/2 bg-gradient-to-br from-primary/10 to-accent-pink/10 blur-3xl animate-pulse")
-    div(class="absolute bottom-0 left-0 w-1/2 h-1/2 bg-gradient-to-tr from-accent-purple/10 to-primary/10 blur-3xl animate-pulse delay-1000")
-    
-    div(class="container mx-auto px-4 relative z-10")
-      div(class="max-w-4xl mx-auto text-center")
-        h1(class="text-6xl font-bold mb-6")
-          span(class="bg-gradient-to-r from-primary via-accent-purple to-accent-pink bg-clip-text text-transparent animate-gradient") MEET OUR 
-          span(class="text-gray-900") FOUNDERS
-        p(class="text-xl text-gray-600 mb-8 animate-fade-in") Discover the inspiring entrepreneurs behind our marketplace products
+  .max-w-7xl.mx-auto.p-6.bg-white.rounded-lg.shadow-md.mt-6
+    // Hero Section with Animated Elements
+    section(class="relative min-h-[40vh] flex items-center justify-center overflow-hidden bg-gradient-to-br from-primary/5 to-accent-pink/10")
+      // Animated background elements
+      div(class="absolute inset-0 pattern-grid opacity-5")
+      div(class="absolute top-0 right-0 w-1/2 h-1/2 bg-gradient-to-br from-primary/10 to-accent-pink/10 blur-3xl animate-pulse")
+      div(class="absolute bottom-0 left-0 w-1/2 h-1/2 bg-gradient-to-tr from-accent-purple/10 to-primary/10 blur-3xl animate-pulse delay-1000")
+      
+      div(class="container mx-auto px-4 relative z-10")
+        div(class="max-w-4xl mx-auto text-center")
+          h1(class="text-6xl font-bold mb-6")
+            span(class="bg-gradient-to-r from-primary via-accent-purple to-accent-pink bg-clip-text text-transparent animate-gradient") MEET OUR 
+            span(class="text-gray-900") FOUNDERS
+          p(class="text-xl text-gray-600 mb-8 animate-fade-in") Discover the inspiring entrepreneurs behind our marketplace products
 
   // Founders Gallery
   section(class="py-16 bg-gray-50")
     div(class="container mx-auto px-4")
-      div(class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8")
-        each founder, index in founders
-          div(
-            class="founder-card group bg-white rounded-xl shadow-lg overflow-hidden hover:shadow-xl transition-all duration-500 animate-fade-in"
-            style=`animation-delay: ${index * 100}ms`
-          )
-            // Founder Image
-            div(class="relative aspect-square overflow-hidden")
-              img(
-                class="w-full h-full object-cover transform group-hover:scale-110 transition-transform duration-700"
-                src=founder.image
-                alt=founder.name
-              )
-              div(class="absolute inset-0 bg-gradient-to-t from-black/60 via-black/30 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300")
-              // Category Badge
-              div(class="absolute top-4 left-4 px-3 py-1 bg-white/90 backdrop-blur-md rounded-full text-primary text-sm font-medium")
-                = founder.category || 'General'
-            
-            // Founder Info
-            div(class="p-6")
-              h3(class="text-xl font-bold text-gray-800 mb-3 group-hover:text-primary transition-colors")= founder.name
-              p(class="text-gray-600 mb-4")= founder.title
-              p(class="text-gray-600 mb-6 line-clamp-2")= founder.bio
-              
-              // Product Link
-              a(
-                href=`/founder/${founder.id}`
-                class="inline-flex items-center gap-2 text-primary font-medium hover:text-primary-dark transition-colors group/btn"
-              )
-                span Learn More
-                svg(
-                  class="w-4 h-4 transform group-hover/btn:translate-x-1 transition-transform"
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
+      if founders && founders.length
+        div(class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8")
+          each founder, index in founders
+            div(
+              class="founder-card group bg-white rounded-xl shadow-lg overflow-hidden hover:shadow-xl transition-all duration-500 animate-fade-in"
+              style=`animation-delay: ${index * 100}ms`
+            )
+              // Founder Image
+              div(class="relative aspect-square overflow-hidden")
+                img(
+                  class="w-full h-full object-cover transform group-hover:scale-110 transition-transform duration-700"
+                  src=founder.image
+                  alt=founder.name
                 )
-                  path(
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                    stroke-width="2"
-                    d="M17 8l4 4m0 0l-4 4m4-4H3"
+                div(class="absolute inset-0 bg-gradient-to-t from-black/60 via-black/30 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300")
+                // Category Badge
+                div(class="absolute top-4 left-4 px-3 py-1 bg-white/90 backdrop-blur-md rounded-full text-primary text-sm font-medium")
+                  = founder.category || 'General'
+              // Founder Info
+              div(class="p-6")
+                h3(class="text-xl font-bold text-gray-800 mb-3 group-hover:text-primary transition-colors")= founder.name
+                p(class="text-gray-600 mb-4")= founder.title
+                p(class="text-gray-600 mb-6 line-clamp-2")= founder.bio
+                // Product Link
+                a(
+                  href=`/founder/${founder.id}`
+                  class="inline-flex items-center gap-2 text-primary font-medium hover:text-primary-dark transition-colors group/btn"
+                )
+                  span Learn More
+                  svg(
+                    class="w-4 h-4 transform group-hover/btn:translate-x-1 transition-transform"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
                   )
+                    path(
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      stroke-width="2"
+                      d="M17 8l4 4m0 0l-4 4m4-4H3"
+                    )
+      else
+        .text-center.text-gray-500.text-lg.py-16 No stories to show at the moment.
 
   // Join as Founder Section
   section(class="py-20 bg-white relative overflow-hidden")

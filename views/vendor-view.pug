@@ -1,33 +1,37 @@
 extends layout
 
 block content
-  .container.py-8.px-4
-    .max-w-3xl.mx-auto.bg-white.rounded-lg.shadow-lg.overflow-hidden
-      .p-8
-        h1.text-3xl.font-bold.mb-6.text-gray-800 Order Details
-        
-        .bg-gray-50.p-6.rounded-lg.mb-8
-          .grid.grid-cols-1.gap-4
-            .flex.justify-between.py-2.border-b.border-gray-200
-              span.text-gray-600 Order ID:
-              span.font-medium.text-gray-800 #{orderId}
-            .flex.justify-between.py-2.border-b.border-gray-200
-              span.text-gray-600 Customer Name:
-              span.font-medium.text-gray-800 #{customerName}
-            .flex.justify-between.py-2.border-b.border-gray-200
-              span.text-gray-600 Product:
-              span.font-medium.text-gray-800 #{productName}
-            .flex.justify-between.py-2.border-b.border-gray-200
-              span.text-gray-600 Amount:
-              span.font-medium.text-gray-800 ₹#{amount}
-            .flex.justify-between.py-2
-              span.text-gray-600 Status:
-              span.font-medium(class=status === 'confirmed' ? 'text-green-600' : 'text-yellow-600') #{status}
-        
-        if status !== 'confirmed'
-          .flex.justify-end.gap-4
-            button.px-6.py-3.bg-gray-100.text-gray-700.rounded-lg.hover:bg-gray-200.transition-colors(onclick="window.close()") Close
-            a.px-6.py-3.bg-green-600.text-white.rounded-lg.hover:bg-green-700.transition-colors(href=`/vendor/quick-confirm/${orderId}`) Confirm Order
-        else
-          .flex.justify-end
-            button.px-6.py-3.bg-gray-100.text-gray-700.rounded-lg.hover:bg-gray-200.transition-colors(onclick="window.close()") Close 
+  .min-h-screen.bg-gray-50.py-12.px-4(class='sm:px-6 lg:px-8')
+    .max-w-3xl.mx-auto
+      .bg-white.shadow.rounded-lg.overflow-hidden
+        .px-4.py-5(class='sm:p-6')
+          h2.text-2xl.font-bold.text-gray-900.mb-6 Order Details
+          
+          .space-y-6
+            .grid.grid-cols-2.gap-4
+              .bg-gray-50.p-4.rounded-lg
+                h3.text-sm.font-medium.text-gray-500 Order ID
+                p.text-lg.font-semibold.text-gray-900= orderId
+              
+              .bg-gray-50.p-4.rounded-lg
+                h3.text-sm.font-medium.text-gray-500 Status
+                p.text-lg.font-semibold.text-gray-900= status
+
+            .bg-gray-50.p-4.rounded-lg
+              h3.text-sm.font-medium.text-gray-500 Customer Information
+              p.text-lg.font-semibold.text-gray-900= customerName
+              p.text-sm.text-gray-500= email
+              p.text-sm.text-gray-500= phone
+              p.text-sm.text-gray-500= address
+
+            .bg-gray-50.p-4.rounded-lg
+              h3.text-sm.font-medium.text-gray-500 Product Details
+              p.text-lg.font-semibold.text-gray-900= productName
+              p.text-sm.text-gray-500 Quantity: #{quantity}
+              p.text-lg.font-semibold.text-gray-900 ₹#{amount}
+
+            .flex.justify-end.space-x-4
+              a(href=`/payment/vendor/quick-confirm/${orderId}` class='inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500')
+                | Confirm Order
+              a(href='/admin' class='inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500')
+                | Back to Dashboard 
