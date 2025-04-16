@@ -19,7 +19,7 @@ block content
           
           // Status Text
           h1(class="text-3xl font-bold text-gray-800 mb-4 status-text") Order Pending
-          p(class="text-gray-600 mb-8 status-message") We're waiting for the seller to confirm your payment
+          p(class="text-gray-600 mb-8 status-message") We're processing your order. Please wait for confirmation.
           
           // Order Details
           div(class="space-y-4 text-left bg-gray-50 rounded-xl p-6 mb-8")
@@ -28,24 +28,10 @@ block content
               span(class="font-medium text-gray-800")= orderId
             div(class="flex justify-between items-center")
               span(class="text-gray-600") Product
-              span(class="font-medium text-gray-800")= productName
+              span(class="font-medium text-gray-800")= order.productDetails.name
             div(class="flex justify-between items-center")
-              span(class="text-gray-600") Amount Paid
-              span(class="font-medium text-gray-800") ₹#{amount}
-            div(class="flex justify-between items-center")
-              span(class="text-gray-600") Payment Method
-              span(class="font-medium text-gray-800") UPI
-
-          // UPI QR Code Section
-          div(class="bg-white rounded-xl p-6 mb-8 shadow-inner")
-            h2(class="text-xl font-semibold text-gray-800 mb-4") Scan QR Code to Pay
-            div(class="max-w-xs mx-auto")
-              img(
-                src=upiQrCodePath
-                alt="UPI QR Code"
-                class="w-full rounded-lg shadow-lg mb-4"
-              )
-            p(class="text-sm text-gray-600 text-center") Please scan this QR code with any UPI app to make the payment
+              span(class="text-gray-600") Amount
+              span(class="font-medium text-gray-800") ₹#{order.amount}
           
           // Status Timeline
           div(class="flex items-center justify-between max-w-xs mx-auto mb-8")
@@ -53,7 +39,7 @@ block content
               div(class="w-8 h-8 rounded-full bg-primary text-white flex items-center justify-center mb-2")
                 svg(class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24")
                   path(stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7")
-              span(class="text-sm text-gray-600") Payment Made
+              span(class="text-sm text-gray-600") Order Placed
             div(class="flex-1 h-1 bg-gray-200 mx-2")
             div(class="flex flex-col items-center")
               div(class="w-8 h-8 rounded-full bg-gray-200 flex items-center justify-center mb-2 confirmation-circle animate-pulse")

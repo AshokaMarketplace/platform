@@ -93,39 +93,22 @@ router.post('/process-payment', async (req, res) => {
 
 // Order pending page
 router.get('/order-pending/:orderId', async (req, res) => {
-    const orderId = req.params.orderId;
-    console.log('\n=== Accessing Order Pending Page ===');
-    console.log('Looking for order:', orderId);
-
     try {
         const orders = await getOrders();
-        const order = orders.orders.find(o => o.id === orderId);
+        const order = orders.orders.find(o => o.id === req.params.orderId);
 
         if (!order) {
-            console.log('Order not found');
-            return res.status(404).render('error', {
-                message: 'Order not found',
-                error: { status: 404 }
-            });
+            console.error('Order not found:', req.params.orderId);
+            return res.status(404).render('error', { message: 'Order not found' });
         }
 
-        // Get the founder data to access the UPI QR code
-        const founders = require('../data/founders.json');
-        const founder = founders.find(f => f.id === order.vendorId);
-        const upiQrCodePath = founder ? `/images/founders/upi/${founder.upiQrCode}` : '/images/founders/upi/radhika-suhana-syona-upi.png';
-
         res.render('order-pending', {
-            orderId: order.id,
-            amount: order.amount,
-            productName: order.productDetails.name,
-            upiQrCodePath: upiQrCodePath
+            order,
+            orderId: order.id
         });
-    } catch (error) {
-        console.error('Error fetching order:', error);
-        res.status(500).render('error', {
-            message: 'Error loading order',
-            error: { status: 500 }
-        });
+    } catch (err) {
+        console.error('Error in order-pending route:', err);
+        res.status(500).render('error', { message: 'Internal server error' });
     }
 });
 
