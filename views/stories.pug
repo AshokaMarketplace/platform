@@ -19,29 +19,56 @@ block content
   // Founders Gallery
   section(class="py-16 bg-gray-50")
     div(class="container mx-auto px-4")
-      if founders && founders.length
-        div(class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8")
-          each founder, index in founders
+      if founders && founders.founders && founders.founders.length
+        div(class="grid grid-cols-1 md:grid-cols-2 gap-8")
+          each founder, index in founders.founders
             div(
               class="founder-card group bg-white rounded-xl shadow-lg overflow-hidden hover:shadow-xl transition-all duration-500 animate-fade-in"
               style=`animation-delay: ${index * 100}ms`
             )
               // Founder Image
               div(class="relative aspect-square overflow-hidden")
-                img(
-                  class="w-full h-full object-cover transform group-hover:scale-110 transition-transform duration-700"
-                  src=founder.image
-                  alt=founder.name
-                )
+                if founder.id === 'lovsy-founders'
+                  img(
+                    class="w-full h-full object-cover transform group-hover:scale-110 transition-transform duration-700 scale-70"
+                    src=founder.image
+                    alt=founder.name
+                  )
+                else
+                  img(
+                    class="w-full h-full object-cover transform group-hover:scale-110 transition-transform duration-700"
+                    src=founder.image
+                    alt=founder.name
+                  )
                 div(class="absolute inset-0 bg-gradient-to-t from-black/60 via-black/30 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300")
-                // Category Badge
+                // Location Badge
                 div(class="absolute top-4 left-4 px-3 py-1 bg-white/90 backdrop-blur-md rounded-full text-primary text-sm font-medium")
-                  = founder.category || 'General'
+                  = founder.location
               // Founder Info
               div(class="p-6")
                 h3(class="text-xl font-bold text-gray-800 mb-3 group-hover:text-primary transition-colors")= founder.name
                 p(class="text-gray-600 mb-4")= founder.title
-                p(class="text-gray-600 mb-6 line-clamp-2")= founder.bio
+                p(class="text-gray-600 mb-6")= founder.bio
+                // Social Links
+                if founder.socials
+                  div(class="flex gap-4 mb-4")
+                    if founder.socials.instagram
+                      a(
+                        href=founder.socials.instagram
+                        target="_blank"
+                        class="text-gray-600 hover:text-primary transition-colors"
+                      )
+                        i(class="fab fa-instagram text-xl")
+                    if founder.socials.linkedin
+                      a(
+                        href=founder.socials.linkedin
+                        target="_blank"
+                        class="text-gray-600 hover:text-primary transition-colors"
+                      )
+                        i(class="fab fa-linkedin text-xl")
+                // Story
+                if founder.story
+                  p(class="text-gray-700 mb-6")= founder.story
                 // Product Link
                 a(
                   href=`/founder/${founder.id}`

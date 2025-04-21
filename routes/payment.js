@@ -247,11 +247,13 @@ router.get('/order-confirmed/:orderId', async (req, res) => {
 
 // Get payment page
 router.get('/getPayment/:productId', async (req, res) => {
-    const { productId } = req.params;
-    const { quantity, total } = req.query;
-
     try {
-        const product = products.find(p => p.id === productId);
+        const { productId } = req.params;
+        const { quantity, total } = req.query;
+
+        // Get product data
+        const products = require('../data.js');
+        const product = products.products.find(p => p.id === productId);
 
         if (!product) {
             return res.status(404).render('error', {
@@ -260,10 +262,23 @@ router.get('/getPayment/:productId', async (req, res) => {
             });
         }
 
+        // Get founder data
+        const founders = require('../data/founders.json');
+        const founder = founders.founders.find(f => f.id === product.founderId);
+
+        if (!founder) {
+            return res.status(404).render('error', {
+                message: 'Founder not found',
+                error: { status: 404 }
+            });
+        }
+
         res.render('payment', {
+            title: 'Payment',
             product,
-            quantity: parseInt(quantity) || 1,
-            total: parseFloat(total) || product.price
+            quantity,
+            total,
+            upiImage: founder.upiQrCode
         });
     } catch (error) {
         console.error('Error loading payment page:', error);
