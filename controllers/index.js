@@ -61,7 +61,8 @@ exports.getProduct = (req, res) => {
 		const relatedProducts = products.filter(p => p.id !== product.id).slice(0, 4);
 
 		// Get founder information
-		const founder = founders.find(f => f.id === product.founderId);
+		const foundersData = require('../data/founders.json');
+		const founder = foundersData.founders.find(f => f.id === product.founderId);
 
 		res.render('product', {
 			product,
@@ -227,7 +228,8 @@ exports.getAbout = (req, res) => {
 };
 
 exports.getStories = (req, res) => {
-	res.render('stories', { founders, path: '/stories' });
+	const foundersData = require('../data/founders.json');
+	res.render('stories', { founders: foundersData, path: '/stories' });
 };
 
 exports.getAccount = (req, res) => {

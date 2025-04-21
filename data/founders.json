@@ -18,6 +18,22 @@
                 "instagram": "https://www.instagram.com/kazematcha",
                 "linkedin": "https://www.linkedin.com/in/radhika-gupta-ashoka/"
             }
+        },
+        {
+            "id": "lovsy-founders",
+            "name": "Aashraya Adhikari & Suprabh Raj Joshi",
+            "title": "Founders",
+            "image": "/images/founders/aashraya-suprabh.jpg",
+            "location": "Nepal",
+            "gallery": [],
+            "upiId": "aashraya.adhikaril0@okhdfcbank",
+            "upiQrCode": "",
+            "bio": "Get ready to tantalize your tastebuds!! Delicacies from the great land of Himalayas Nepali Hog Plum Candies and Chips",
+            "story": "Passionately created by young Nepali entrepreneurs, Lovsy is more than a brand; it's a journey into the heart of Nepal's unique taste. We are on a mission to tantalize taste buds around the world with our unique candy flavors, capturing the exotic tastes of the Himalayas.\n\nOur aspiration is simple yet profound: we want the world to experience the delight of this Nepali delicacy and add some flavors to their lives.\n\nOur Mission\n\nOur mission is to bring the unique and authentic flavors of Nepal to the world, starting with our tantalizing Lapsi Candies. We aim to uplift local farmers, contribute to Nepal's growth, and establish a globally recognized brand known for its exceptional taste and commitment to quality.\n\nOur Vision\n\nTo be the trailblazer in introducing global audiences to the distinct taste of Nepali products, Lovsy envisions becoming a renowned brand synonymous with the diverse and rich flavors of Nepal.",
+            "socials": {
+                "instagram": "https://www.instagram.com/mylovsy/",
+                "linkedin": "https://www.linkedin.com/in/my-lovsy-5b98302a3/"
+            }
         }
     ]
 }

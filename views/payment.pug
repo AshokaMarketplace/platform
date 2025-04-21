@@ -126,23 +126,12 @@ block content
                   // UPI QR Code
                   div(class="bg-white rounded-xl p-6 text-center border-2 border-dashed border-gray-200 hover:border-primary transition-colors")
                     div(class="max-w-[200px] mx-auto mb-4")
-                      if founder && founder.upiQrCode
-                        img(
-                          class="w-full rounded-lg shadow-md"
-                          src=founder.upiQrCode
-                          alt='UPI QR Code'
-                        )
-                      else
-                        img(
-                          class="w-full rounded-lg shadow-md"
-                          src='/images/upi-qr-placeholder.jpg'
-                          alt='UPI QR Code'
-                        )
-                    if founder && founder.upiId
-                      p(class="text-sm text-gray-500 mb-2") Scan QR code with any UPI app
-                      p(class="text-sm font-medium text-gray-700") UPI ID: #{founder.upiId}
-                    else
-                      p(class="text-sm text-gray-500") Scan QR code with any UPI app
+                      img(
+                        class="w-full rounded-lg shadow-md"
+                        src=product.upiImage
+                        alt='UPI QR Code'
+                      )
+                    p(class="text-sm text-gray-500 mb-2") Scan QR code with any UPI app
 
               // Proceed to Pay Button
               button(
