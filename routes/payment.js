@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 const fs = require('fs').promises;
 const path = require('path');
+const { products } = require('../data');
 
 // Helper function to read orders
 async function getOrders() {
@@ -239,6 +240,35 @@ router.get('/order-confirmed/:orderId', async (req, res) => {
         console.error('Error fetching order:', error);
         res.status(500).render('error', {
             message: 'Error loading order',
+            error: { status: 500 }
+        });
+    }
+});
+
+// Get payment page
+router.get('/getPayment/:productId', async (req, res) => {
+    const { productId } = req.params;
+    const { quantity, total } = req.query;
+
+    try {
+        const product = products.find(p => p.id === productId);
+
+        if (!product) {
+            return res.status(404).render('error', {
+                message: 'Product not found',
+                error: { status: 404 }
+            });
+        }
+
+        res.render('payment', {
+            product,
+            quantity: parseInt(quantity) || 1,
+            total: parseFloat(total) || product.price
+        });
+    } catch (error) {
+        console.error('Error loading payment page:', error);
+        res.status(500).render('error', {
+            message: 'Error loading payment page',
             error: { status: 500 }
         });
     }

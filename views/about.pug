@@ -1,226 +1,61 @@
-extends layout.pug
+extends layout
 
 block content
-  // Hero Section with Animated Elements
-  section(class="relative min-h-[70vh] flex items-center justify-center overflow-hidden bg-gradient-to-br from-primary/5 to-accent-pink/10")
-    // Animated background elements
-    div(class="absolute inset-0 pattern-grid opacity-5")
-    div(class="absolute top-0 right-0 w-1/2 h-1/2 bg-gradient-to-br from-primary/10 to-accent-pink/10 blur-3xl animate-pulse")
-    div(class="absolute bottom-0 left-0 w-1/2 h-1/2 bg-gradient-to-tr from-accent-purple/10 to-primary/10 blur-3xl animate-pulse delay-1000")
+  // Hero Section with Group Photo
+  section(class="relative bg-gray-50 py-16")
+    div(class="container mx-auto px-6")
+      div(class="max-w-4xl mx-auto text-center mb-12")
+        h1(class="text-5xl md:text-6xl font-bold text-gray-900 mb-6") About The Entrepreneurship Club
+        p(class="text-2xl text-gray-600") Fostering Innovation and Entrepreneurial Spirit at Ashoka University
     
-    div(class="container mx-auto px-4 relative z-10")
+    // Group Photo Section
+    div(class="container mx-auto px-6")
+      div(class="max-w-6xl mx-auto rounded-2xl overflow-hidden shadow-xl")
+        img(
+          src="/images/about_us.jpeg"
+          alt="E-Club Team Photo"
+          class="w-full h-auto object-cover"
+        )
+
+  // Main Content Section
+  section(class="py-16 bg-white")
+    div(class="container mx-auto px-6")
+      div(class="max-w-4xl mx-auto")
+        // Introduction
+        div(class="mb-12")
+          h2(class="text-4xl font-bold text-gray-900 mb-6") The Entrepreneurship Club (E-Club)
+          p(class="text-xl text-gray-600 leading-relaxed mb-4")
+            | The Entrepreneurship Club (E-Club) at Ashoka University is a thriving student-led initiative dedicated to fostering entrepreneurial spirit, innovation, and business acumen on campus. Backed by the InfoEdge Centre for Entrepreneurship (CFE), the club serves as a platform for aspiring entrepreneurs to ideate, build, and scale their ventures while engaging with industry experts and thought leaders.
+          p(class="text-xl text-gray-600 leading-relaxed")
+            | With a robust team of 80+ members, E-Club is structured across multiple verticals, each playing a pivotal role in shaping the entrepreneurial ecosystem at Ashoka.
+
+        // Marketplace Initiative
+        div(class="bg-gray-50 p-8 rounded-lg")
+          h3(class="text-3xl font-bold text-gray-900 mb-4") About Ashoka Marketplace
+          p(class="text-xl text-gray-600 leading-relaxed")
+            | The Ashoka Marketplace is an initiative of the Technology Vertical of The Entrepreneurship Club (E-Club) at Ashoka University. This platform serves as a bridge between student entrepreneurs and the campus community, providing a space for innovative products and services to thrive.
+
+  // Stats Section
+  section(class="py-16 bg-gray-50")
+    div(class="container mx-auto px-6")
+      div(class="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-4xl mx-auto")
+        div(class="text-center")
+          h3(class="text-5xl font-bold text-custom-red mb-2") 80+
+          p(class="text-xl text-gray-600") Active Members
+        div(class="text-center")
+          h3(class="text-5xl font-bold text-custom-red mb-2") 7
+          p(class="text-xl text-gray-600") Vertical Teams
+        div(class="text-center")
+          h3(class="text-5xl font-bold text-custom-red mb-2") 100+
+          p(class="text-xl text-gray-600") Successful Events
+
+  // Call to Action
+  section(class="py-16 bg-white")
+    div(class="container mx-auto px-6")
       div(class="max-w-4xl mx-auto text-center")
-        h1(class="text-6xl font-bold mb-6")
-          span(class="bg-gradient-to-r from-primary via-accent-purple to-accent-pink bg-clip-text text-transparent animate-gradient") ABOUT 
-          span(class="text-gray-900") US
-        p(class="text-xl text-gray-600 mb-8 animate-fade-in") Building the future of campus commerce, one trade at a time
-        
-        // Animated Stats
-        div(class="grid grid-cols-2 md:grid-cols-4 gap-8 mt-12")
-          each stat in [['1000+', 'Active Users'], ['500+', 'Products Sold'], ['50+', 'Categories'], ['4.8/5', 'User Rating']]
-            div(class="bg-white/80 backdrop-blur-md rounded-xl p-6 transform hover:scale-105 transition-all duration-300 group animate-fade-in")
-              div(class="text-3xl font-bold text-primary mb-2 group-hover:scale-110 transition-transform")= stat[0]
-              div(class="text-sm text-gray-600")= stat[1]
-
-  // Enhanced Mission Section
-  section(class="py-24 relative overflow-hidden")
-    // Animated background elements
-    div(class="absolute inset-0 bg-gradient-to-br from-primary/5 to-accent-pink/5")
-    div(class="absolute top-0 right-0 w-1/3 h-1/3 bg-gradient-to-br from-primary/10 to-accent-pink/10 blur-3xl animate-pulse")
-    div(class="absolute bottom-0 left-0 w-1/3 h-1/3 bg-gradient-to-tr from-accent-purple/10 to-primary/10 blur-3xl animate-pulse delay-1000")
-    
-    div(class="container mx-auto px-4 relative z-10")
-      div(class="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center")
-        div(class="animate-fade-in")
-          div(class="inline-block px-4 py-2 bg-primary/10 rounded-full text-primary font-medium mb-6") Our Mission
-          h2(class="text-4xl font-bold text-gray-800 mb-6") Empowering Campus Commerce
-          p(class="text-lg text-gray-600 mb-8 leading-relaxed")
-            | We're on a mission to revolutionize how students buy and sell within their campus community. By creating a trusted marketplace exclusively for students, we're making campus commerce easier, safer, and more sustainable.
-          
-          // Mission Points
-          div(class="space-y-4")
-            each point in ['Trusted Community', 'Secure Transactions', 'Sustainable Trading', 'Student Support']
-              div(class="flex items-center gap-4 group")
-                div(class="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center group-hover:bg-primary group-hover:rotate-12 transition-all duration-300")
-                  svg(class="w-6 h-6 text-primary group-hover:text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24")
-                    path(stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7")
-                span(class="text-gray-600 group-hover:text-primary transition-colors")= point
-        
-        // Image Section with Floating Elements
-        div(class="relative aspect-square lg:aspect-auto rounded-2xl overflow-hidden animate-fade-in")
-          img(
-            class="w-full h-full object-cover"
-            src='/images/about-hero.jpg' 
-            alt='About Us Image'
-          )
-          // Floating Elements
-          div(class="absolute inset-0 bg-gradient-to-t from-black/30 to-transparent")
-          div(class="absolute bottom-8 left-8 right-8 bg-white/90 backdrop-blur-md rounded-xl p-6 transform hover:scale-105 transition-all duration-300")
-            p(class="text-gray-800 font-medium") "Our platform is more than just a marketplace; it's a community where students can connect, trade, and grow together."
-            div(class="flex items-center gap-4 mt-4")
-              img(
-                class="w-10 h-10 rounded-full border-2 border-primary"
-                src='/images/founder-avatar.jpg' 
-                alt='CEO Avatar'
-              )
-              div
-                h4(class="font-medium text-gray-800") Sarah Johnson
-                p(class="text-sm text-gray-500") CEO & Co-founder
-
-  // Enhanced Values Section
-  section(class="py-24 bg-gray-50 relative overflow-hidden")
-    // Animated background elements
-    div(class="absolute inset-0 pattern-grid opacity-5")
-    
-    div(class="container mx-auto px-4 relative z-10")
-      div(class="text-center mb-16 animate-fade-in")
-        h2(class="text-4xl font-bold text-gray-800 mb-6") Our Values
-        p(class="text-lg text-gray-600 max-w-2xl mx-auto") What drives us every day
-
-      div(class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8")
-        each value, index in [
-          ['Trust', 'Building a safe and reliable marketplace for our community'],
-          ['Innovation', 'Constantly improving the way students connect and trade'],
-          ['Sustainability', 'Promoting responsible consumption within campuses'],
-          ['Community', 'Fostering meaningful connections between students'],
-          ['Accessibility', 'Making commerce easy and accessible for everyone'],
-          ['Growth', 'Supporting student entrepreneurs in their journey']
-        ]
-          div(
-            class="group bg-white rounded-xl p-8 shadow-lg hover:shadow-xl transition-all duration-500 animate-fade-in transform hover:-translate-y-2"
-            style=`animation-delay: ${index * 100}ms`
-          )
-            div(
-              class="w-16 h-16 mb-6 rounded-full bg-primary/10 flex items-center justify-center group-hover:scale-110 group-hover:rotate-12 transition-all duration-300"
-            )
-              svg(class="w-8 h-8 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24")
-                path(stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7")
-            h3(class="text-xl font-bold text-gray-800 mb-4 group-hover:text-primary transition-colors")= value[0]
-            p(class="text-gray-600")= value[1]
-
-  // Enhanced Team Section
-  section(class="py-24 relative overflow-hidden")
-    div(class="container mx-auto px-4")
-      div(class="text-center mb-16 animate-fade-in")
-        h2(class="text-4xl font-bold text-gray-800 mb-6") Meet Our Team
-        p(class="text-lg text-gray-600 max-w-2xl mx-auto") The passionate individuals behind our marketplace
-
-      div(class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8")
-        each member, index in Array(4).fill()
-          div(
-            class="group animate-fade-in"
-            style=`animation-delay: ${index * 100}ms`
-          )
-            div(class="relative aspect-square rounded-xl overflow-hidden mb-6")
-              img(
-                class="w-full h-full object-cover transform group-hover:scale-110 transition-transform duration-700"
-                src=`/images/team-${index + 1}.jpg`
-                alt='Team Member'
-              )
-              div(class="absolute inset-0 bg-gradient-to-t from-black/60 via-black/30 to-transparent opacity-0 group-hover:opacity-100 transition-opacity")
-              
-              // Social Links Overlay
-              div(
-                class="absolute bottom-0 left-0 right-0 p-4 flex justify-center gap-4 transform translate-y-full group-hover:translate-y-0 transition-transform duration-300"
-              )
-                each social in ['Twitter', 'LinkedIn', 'GitHub']
-                  a(
-                    href='#'
-                    class="w-10 h-10 bg-white/90 backdrop-blur-md rounded-full flex items-center justify-center text-primary hover:bg-primary hover:text-white transition-all duration-300"
-                  )
-                    svg(class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24")
-                      path(d="M12 0c-6.627 0-12 5.373-12 12s5.373 12 12 12 12-5.373 12-12-5.373-12-12-12zm-2 16h-2v-6h2v6zm-1-6.891c-.607 0-1.1-.496-1.1-1.109 0-.612.492-1.109 1.1-1.109s1.1.497 1.1 1.109c0 .613-.493 1.109-1.1 1.109zm8 6.891h-1.998v-2.861c0-1.881-2.002-1.722-2.002 0v2.861h-2v-6h2v1.093c.872-1.616 4-1.736 4 1.548v3.359z")
-            
-            div(class="text-center")
-              h3(class="text-xl font-bold text-gray-800 mb-1 group-hover:text-primary transition-colors") Team Member
-              p(class="text-gray-500 mb-4") Position
-              p(class="text-sm text-gray-600") "Passionate about creating meaningful experiences for our community."
-
-  // Enhanced Contact Section
-  section(
-    class="py-24 bg-gradient-to-br from-primary to-primary-dark text-white relative overflow-hidden"
-    id="contact"
-  )
-    // Animated background elements
-    div(class="absolute inset-0 bg-[url('/images/pattern-light.svg')] opacity-10")
-    div(
-      class="absolute top-0 right-0 w-1/3 h-1/3 bg-white/10 blur-3xl rounded-full animate-pulse"
-    )
-    div(
-      class="absolute bottom-0 left-0 w-1/3 h-1/3 bg-white/10 blur-3xl rounded-full animate-pulse delay-1000"
-    )
-    
-    div(class="container mx-auto px-4 relative z-10")
-      div(class="max-w-4xl mx-auto text-center")
-        h2(class="text-4xl font-bold mb-6") Get in Touch
-        p(class="text-lg opacity-90 mb-12") Have questions? We'd love to hear from you.
-        
-        div(class="grid grid-cols-1 md:grid-cols-3 gap-8 mb-12")
-          each contact in [
-            ['Email', 'support@ashokan.com'],
-            ['Phone', '+1 (555) 123-4567'],
-            ['Location', 'Campus Hub, Building A']
-          ]
-            div(
-              class="bg-white/10 backdrop-blur-md rounded-xl p-6 hover:transform hover:scale-105 transition-all duration-300"
-            )
-              h3(class="text-xl font-bold mb-2")= contact[0]
-              p(class="opacity-90")= contact[1]
-        
-        // Contact Form
-        form(class="max-w-2xl mx-auto")
-          div(class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6")
-            input(
-              type="text"
-              placeholder="Your Name"
-              class="w-full px-4 py-3 rounded-lg bg-white/10 backdrop-blur-md border border-white/20 text-white placeholder-white/60 focus:border-white focus:ring-2 focus:ring-white/20"
-            )
-            input(
-              type="email"
-              placeholder="Your Email"
-              class="w-full px-4 py-3 rounded-lg bg-white/10 backdrop-blur-md border border-white/20 text-white placeholder-white/60 focus:border-white focus:ring-2 focus:ring-white/20"
-            )
-          textarea(
-            placeholder="Your Message"
-            rows="4"
-            class="w-full px-4 py-3 rounded-lg bg-white/10 backdrop-blur-md border border-white/20 text-white placeholder-white/60 focus:border-white focus:ring-2 focus:ring-white/20 mb-6"
-          )
-          button(
-            type="submit"
-            class="bg-white text-primary px-8 py-4 rounded-xl font-medium hover:bg-white/90 transition-colors duration-300 transform hover:-translate-y-1 hover:shadow-xl"
-          ) Send Message
-
-  style.
-    @keyframes float {
-      0%, 100% { transform: translateY(0px); }
-      50% { transform: translateY(-20px); }
-    }
-    
-    @keyframes gradient {
-      0% { background-position: 0% 50%; }
-      50% { background-position: 100% 50%; }
-      100% { background-position: 0% 50%; }
-    }
-    
-    .animate-float {
-      animation: float 6s ease-in-out infinite;
-    }
-    
-    .animate-gradient {
-      background-size: 200% auto;
-      animation: gradient 8s linear infinite;
-    }
-    
-    .animate-fade-in {
-      animation: fadeIn 0.6s ease-out forwards;
-    }
-    
-    @keyframes fadeIn {
-      from { opacity: 0; transform: translateY(20px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
-    
-    .pattern-grid {
-      background-image: radial-gradient(rgba(0, 0, 0, 0.1) 1px, transparent 1px);
-      background-size: 20px 20px;
-    }
+        h2(class="text-4xl font-bold text-gray-900 mb-6") Join Our Community
+        p(class="text-xl text-gray-600 mb-8") Be part of the entrepreneurial revolution at Ashoka University
+        a(
+          href="/seller/register"
+          class="bg-custom-red text-white px-8 py-4 rounded-lg text-xl font-semibold hover:bg-opacity-90 transition-all duration-200 inline-block"
+        ) Become a Seller
